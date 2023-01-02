@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "212492569517",
+    "firebase_url": "https://zh-transport-bus-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "zh-transport-bus",
+    "storage_bucket": "zh-transport-bus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212492569517:android:18b099bc2260037f5e2f24",
+        "android_client_info": {
+          "package_name": "com.example.demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212492569517-sbqnv31su807ond6itv2n6d2tjhfkqtr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSXAKBLLpVp8R2tjYkq4z09gohKBge1ac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212492569517-sbqnv31su807ond6itv2n6d2tjhfkqtr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "212492569517-7jn3u9gpcm4s6eimqnv6t5ecudkn1acs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.demo"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212492569517:android:a5102ec31ebef8635e2f24",
+        "android_client_info": {
+          "package_name": "com.zitherharp.transport.bus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212492569517-sbqnv31su807ond6itv2n6d2tjhfkqtr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSXAKBLLpVp8R2tjYkq4z09gohKBge1ac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212492569517-sbqnv31su807ond6itv2n6d2tjhfkqtr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "212492569517-7jn3u9gpcm4s6eimqnv6t5ecudkn1acs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.demo"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
