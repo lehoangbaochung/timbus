@@ -54,7 +54,7 @@ class _RoutePageState extends State<RoutePage> {
                     final unsaved = !routes.contains(route);
                     return IconButton(
                       tooltip: AppLocalizations.localize(73),
-                      icon: const Icon(Icons.star_border),
+                      icon: Icon(unsaved ? Icons.star_border : Icons.star),
                       onPressed: () async {
                         if (unsaved) {
                           context.showSnackBar(AppLocalizations.localize(33));
@@ -259,7 +259,7 @@ class _RoutePageState extends State<RoutePage> {
                             actions: [
                               IconButton(
                                 icon: const Icon(Icons.fullscreen),
-                                tooltip: AppLocalizations.localize(75),
+                                tooltip: AppLocalizations.localize(29),
                                 onPressed: () => fullscreenMode.value = true,
                               ),
                             ],
@@ -336,6 +336,7 @@ class _RoutePageState extends State<RoutePage> {
                               // Details
                               ListView(
                                 children: [
+                                  // agency
                                   FutureBuilder(
                                     future: route.agency,
                                     builder: (context, snapshot) {
@@ -346,59 +347,74 @@ class _RoutePageState extends State<RoutePage> {
                                             foregroundColor: Colors.blue,
                                             child: Icon(Icons.factory),
                                           ),
-                                          title: const Text('Đơn vị chủ quản'),
+                                          title: Text(
+                                            AppLocalizations.localize(20),
+                                          ),
                                           trailing: const Icon(Icons.arrow_right),
-                                          subtitle: Text(agency == null ? '(đang cập nhật)' : agency.name),
+                                          subtitle: Text(agency == null ? AppLocalizations.localize(72) : agency.name),
                                           onTap: () => agency == null ? null : AppPages.push(context, AppPages.agency.path, agency),
                                         );
                                       }
                                       return const SizedBox.shrink();
                                     },
                                   ),
+                                  // timeline
                                   ListTile(
                                     leading: const CircleAvatar(
                                       foregroundColor: Colors.blue,
                                       child: Icon(Icons.timeline),
                                     ),
-                                    title: const Text('Tần suất'),
+                                    title: Text(
+                                      AppLocalizations.localize(21),
+                                    ),
                                     subtitle: Text(
-                                      '${trip.getTimes(DayOfWeek.weekday).join('-')} phút/chuyến',
+                                      '${trip.getTimes(DayOfWeek.weekday).join(' - ')} ${AppLocalizations.localize(23)}',
                                     ),
                                   ),
+                                  // fare
                                   ListTile(
                                     leading: const CircleAvatar(
                                       foregroundColor: Colors.blue,
                                       child: Icon(Icons.attach_money),
                                     ),
-                                    title: const Text('Giá vé'),
-                                    subtitle: Text('${trip.fare} VND/lượt'),
+                                    title: Text(
+                                      AppLocalizations.localize(22),
+                                    ),
+                                    subtitle: Text('${trip.fare} ${AppLocalizations.localize(73)}'),
                                   ),
+                                  // distance
                                   ListTile(
                                     leading: const CircleAvatar(
                                       foregroundColor: Colors.blue,
                                       child: Icon(Icons.linear_scale_rounded),
                                     ),
-                                    title: const Text('Cự ly'),
+                                    title: Text(
+                                      AppLocalizations.localize(24),
+                                    ),
                                     subtitle: Text('${trip.distance} km'),
                                   ),
+                                  // timelapse
                                   ListTile(
-                                    isThreeLine: true,
                                     leading: const CircleAvatar(
                                       foregroundColor: Colors.blue,
                                       child: Icon(Icons.timelapse),
                                     ),
-                                    title: const Text('Thời gian hoạt động'),
+                                    title: Text(
+                                      AppLocalizations.localize(25),
+                                    ),
                                     subtitle: Text(
-                                      'Ngày thường: ${trip.getActiveTime(DayOfWeek.weekday)}\n'
-                                      'Cuối tuần: ${trip.getActiveTime(DayOfWeek.weekend)}',
+                                      trip.getActiveTime(DayOfWeek.weekday),
                                     ),
                                   ),
+                                  // description
                                   ListTile(
                                     leading: const CircleAvatar(
                                       foregroundColor: Colors.blue,
                                       child: Icon(Icons.route),
                                     ),
-                                    title: const Text('Lộ trình vận hành'),
+                                    title: Text(
+                                      AppLocalizations.localize(28),
+                                    ),
                                     subtitle: Text(trip.description),
                                   ),
                                 ],

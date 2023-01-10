@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../app/localizations.dart';
+import '/app/localizations.dart';
 import '/entities/article.dart';
-import '../app/pages.dart';
+import '/app/pages.dart';
 import '/exports/widgets.dart';
 import '/extensions/context.dart';
 import '/repositories/app_storage.dart';
@@ -187,7 +187,12 @@ class ArticleDetailPage extends StatelessWidget {
                 ),
               ),
               onTap: () => context.launch(article.source),
-              onLongPress: () => context.copyToClipboard(article.source),
+              onLongPress: () {
+                context.copyToClipboard(
+                  article.source,
+                  message: AppLocalizations.localize(66),
+                );
+              },
             ),
           ],
         ),

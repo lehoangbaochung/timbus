@@ -32,8 +32,8 @@ class HomePage extends StatelessWidget {
         child: ListView(
           children: [
             DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Colors.green,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,

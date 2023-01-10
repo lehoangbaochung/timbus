@@ -41,10 +41,10 @@ extension BuildContextX on BuildContext {
   }
 
   /// Copy [text] into clipboard then shows a [SnackBar] with a [message] to user.
-  void copyToClipboard(String? text, {String? message}) async {
+  void copyToClipboard(String? text, {required String message}) async {
     await Clipboard.setData(
       ClipboardData(text: text),
     );
-    showSnackBar(message ?? 'Đã sao chép đường dẫn vào khay nhớ tạm');
+    showSnackBar(message);
   }
 }

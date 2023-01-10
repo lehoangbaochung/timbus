@@ -8,9 +8,9 @@ import '/app/pages.dart';
 import '/exports/widgets.dart';
 
 class StopPage extends StatelessWidget {
-  final Stop stop;
-
   const StopPage(this.stop, {super.key});
+
+  final Stop stop;
 
   @override
   Widget build(BuildContext context) {
@@ -123,9 +123,52 @@ class StopPage extends StatelessWidget {
                 Icons.bus_alert,
                 color: Colors.white,
               ),
-              trailing: const Icon(
-                Icons.more_vert,
-                color: Colors.white,
+              trailing: InkWell(
+                child: const Icon(
+                  Icons.more_vert,
+                  color: Colors.white,
+                ),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return SimpleDialog(
+                        title: Text(
+                          stop.name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        children: [
+                          TextButton(
+                            onPressed: () async {
+                              Navigator.pop(context);
+                              await showSearch(
+                                context: context,
+                                query: stop.name,
+                                delegate: DirectionPage(from: stop),
+                              );
+                            },
+                            child: Text(
+                              AppLocalizations.localize(84),
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              Navigator.pop(context);
+                              await showSearch(
+                                context: context,
+                                delegate: DirectionPage(to: stop),
+                              );
+                            },
+                            child: Text(
+                              AppLocalizations.localize(85),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
               ),
               title: Text(
                 stop.name,

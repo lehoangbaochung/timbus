@@ -14,7 +14,7 @@ class Trip {
 
   final String name;
 
- // final String polyline;
+  // final String polyline;
 
   final String description;
 
@@ -63,7 +63,7 @@ class Trip {
 
   String getActiveTime(DayOfWeek dayOfWeek) {
     final timeline = schedule[dayOfWeek] ?? [];
-    return '${timeline.first} - ${timeline.last}';
+    return '${timeline.first.trim()} -${timeline.last.trim()}';
   }
 
   Iterable<int> getTimes(DayOfWeek dayOfWeek) {
@@ -76,7 +76,7 @@ class Trip {
     }
 
     final times = <int>{};
-    final timeline = schedule[dayOfWeek] ?? {};
+    final timeline = schedule[dayOfWeek] ?? [];
     for (var i = 0; i < timeline.length - 1; i++) {
       times.add(
         getDifference(
@@ -90,13 +90,16 @@ class Trip {
 
   Future<Iterable<Stop>> get stops async {
     if (_stops is Iterable<Stop>) return _stops;
+    final stops = <Stop>[];
     final stopsId = _stops as Iterable<String>;
     final stopsCollection = await appStorage.getAllStops();
-    return stopsId.map(
-      (id) => stopsCollection.singleWhere(
-        (stop) => stop.id == id,
-        orElse: () => Stop.empty,
-      ),
-    );
+    for (final stopId in stopsId) {
+      stops.addAll(
+        stopsCollection.where(
+          (stop) => stop.id == stopId,
+        ),
+      );
+    }
+    return _stops = stops;
   }
 }

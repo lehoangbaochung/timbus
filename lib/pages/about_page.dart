@@ -1,8 +1,9 @@
-import 'package:bus/app/pages.dart';
 import 'package:flutter/material.dart';
 
-import '../app/localizations.dart';
+import '/app/localizations.dart';
+import '/app/pages.dart';
 import '/exports/widgets.dart';
+import '/extensions/context.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -26,7 +27,7 @@ class AboutPage extends StatelessWidget {
             leading: Icons.directions,
             trailing: Icons.arrow_right,
             title: AppLocalizations.localize(10),
-            subtitle: 'Tìm đường đi tối ưu bằng xe buýt',
+            subtitle: AppLocalizations.localize(87),
             onTap: () => showSearch(
               context: context,
               delegate: DirectionPage(),
@@ -36,12 +37,12 @@ class AboutPage extends StatelessWidget {
             leading: Icons.manage_search,
             trailing: Icons.arrow_right,
             title: AppLocalizations.localize(4),
-            subtitle: 'Tra cứu nhanh các thông tin về hoạt động xe buýt',
+            subtitle: AppLocalizations.localize(88),
             onTap: () => AppPages.push(context, AppPages.lookup.path),
           ),
           MenuTile(
             title: AppLocalizations.localize(2),
-            subtitle: 'Quản lý danh sách yêu thích của bạn',
+            subtitle: AppLocalizations.localize(89),
             leading: Icons.follow_the_signs,
             trailing: Icons.arrow_right,
             onTap: () => showSearch(
@@ -51,12 +52,11 @@ class AboutPage extends StatelessWidget {
           ),
           MenuTile(
             title: AppLocalizations.localize(50),
-            subtitle: 'Hỗ trợ người dùng tất cả các ngày trong tuần',
+            subtitle: AppLocalizations.localize(90),
             leading: Icons.support,
             trailing: Icons.arrow_right,
-            onTap: () => showSearch(
-              context: context,
-              delegate: DirectionPage(),
+            onTap: () => context.launch(
+              'mailto:contact@transerco.com.vn',
             ),
           ),
         ],

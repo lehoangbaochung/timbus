@@ -49,13 +49,12 @@ class SettingsPage extends StatelessWidget {
                 await showDialog(
                   context: context,
                   builder: (context) {
-                    return AlertDialog(
+                    return SimpleDialog(
                       title: Text(
                         AppLocalizations.localize(61),
                       ),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: AppLanguages.values.map((language) {
+                      children: AppLanguages.values.map(
+                        (language) {
                           return RadioListTile(
                             value: language,
                             groupValue: appLanguage,
@@ -67,8 +66,8 @@ class SettingsPage extends StatelessWidget {
                             },
                             title: Text(language.fullname),
                           );
-                        }).toList(),
-                      ),
+                        },
+                      ).toList(),
                     );
                   },
                 );
@@ -91,41 +90,38 @@ class SettingsPage extends StatelessWidget {
                   await showDialog(
                     context: context,
                     builder: (context) {
-                      return AlertDialog(
+                      return SimpleDialog(
                         title: Text(
                           AppLocalizations.localize(62),
                         ),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            RadioListTile(
-                              value: true,
-                              groupValue: appTheme,
-                              onChanged: (value) {
-                                setState(() {
-                                  Navigator.pop(context);
-                                  appTheme = value ?? appTheme;
-                                });
-                              },
-                              title: Text(
-                                AppLocalizations.localize(80),
-                              ),
+                        children: [
+                          RadioListTile(
+                            value: true,
+                            groupValue: appTheme,
+                            onChanged: (value) {
+                              setState(() {
+                                Navigator.pop(context);
+                                appTheme = value ?? appTheme;
+                              });
+                            },
+                            title: Text(
+                              AppLocalizations.localize(80),
                             ),
-                            RadioListTile(
-                              value: false,
-                              groupValue: appTheme,
-                              onChanged: (value) {
-                                setState(() {
-                                  Navigator.pop(context);
-                                  appTheme = value ?? appTheme;
-                                });
-                              },
-                              title: Text(
-                                AppLocalizations.localize(81),
-                              ),
+                          ),
+                          RadioListTile(
+                            value: false,
+                            groupValue: appTheme,
+                            onChanged: (value) {
+                              setState(() {
+                                Navigator.pop(context);
+                                appTheme = value ?? appTheme;
+                              });
+                            },
+                            title: Text(
+                              AppLocalizations.localize(81),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       );
                     },
                   );

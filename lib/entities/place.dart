@@ -22,18 +22,19 @@ class Place extends Comparable {
         id,
         name: fields['name'],
         description: fields['description'],
-        images: Iterable.castFrom(fields['images']),
+        images: List.from(fields['images']),
       ).._stops = fields['stops'] ?? '';
     });
   }
 
   Map<String, dynamic> toJson() {
+    final stops = _stops as Iterable<Stop>;
     return {
       id: {
         'name': name,
         'description': description,
         'images': images,
-        'stops': _stops,
+        'stops': stops.map((stop) => stop.id).join(separator),
       },
     };
   }

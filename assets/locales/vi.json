@@ -65,14 +65,14 @@
     "63": "Khoảng cách cảnh báo",
     "64": "Tự động cập nhật",
     "65": "Sử dụng ngoại tuyến",
-    "66": "Đã sao chép đường dẫn vào khay nhớ tạm.",
+    "66": "Đã sao chép đường dẫn vào khay nhớ tạm",
     "67": "Nhập điểm xuất phát...",
     "68": "Nhập điểm muốn đến...",
     "69": "Xóa",
     "70": "Đóng",
     "71": "Trống",
-    "72": "Tuyến",
-    "73": "Thêm vào danh sách yêu thích",
+    "72": "(đang cập nhật)",
+    "73": "VND/lượt",
     "74": "Thu nhỏ",
     "75": "Mở rộng",
     "76": "Tin buýt",
@@ -82,5 +82,7 @@
     "80": "Sáng",
     "81": "Tối",
     "82": "Lưu các thay đổi",
-    "83": "Đã lưu cài đặt"
+    "83": "Đã lưu cài đặt.\nMọi thay đổi sẽ có hiệu lực sau khi khởi động lại ứng dụng.",
+    "84": "Chỉ đường từ đây",
+    "85": "Chỉ đường đến đây"
 }

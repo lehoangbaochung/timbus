@@ -25,9 +25,9 @@ class GeolocatorService {
         final y1 = position.longitude - stop1.position.longitude;
         final x2 = position.latitude - stop2.position.latitude;
         final y2 = position.longitude - stop2.position.longitude;
-        final p = sqrt(pow(x1, 2) + pow(y1, 2));
-        final q = sqrt(pow(x2, 2) + pow(y2, 2));
-        return p.compareTo(q);
+        final a = sqrt(pow(x1, 2) + pow(y1, 2));
+        final b = sqrt(pow(x2, 2) + pow(y2, 2));
+        return a.compareTo(b);
       });
   }
 

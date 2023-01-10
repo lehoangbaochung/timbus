@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 export '/entities/article.dart';
 export '/entities/agency.dart';
 export '/entities/place.dart';
@@ -11,7 +9,6 @@ const empty = '';
 const separator = ',';
 
 /// Interface used by types that have an intrinsic ordering.
-@immutable
 abstract class Comparable {
   final String id;
 

@@ -5,12 +5,6 @@ import '/repositories/app_storage.dart';
 
 class Stop extends Comparable {
   static final Map<String, Stop> _shelf = {};
-  static final Stop empty = Stop._(
-    '0',
-    name: '',
-    description: '',
-    position: LatLng(0, 0),
-  );
 
   final String name;
   final String description;

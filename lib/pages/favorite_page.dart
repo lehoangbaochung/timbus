@@ -1,4 +1,5 @@
 import 'package:bus/app/pages.dart';
+import 'package:bus/extensions/context.dart';
 import 'package:bus/repositories/app_storage.dart';
 import 'package:flutter/material.dart' hide Route;
 
@@ -31,9 +32,6 @@ class FavoritePage extends StatelessWidget {
               ),
             ],
           ),
-          actions: [
-            
-          ],
         ),
         body: TabBarView(
           children: [
@@ -105,6 +103,9 @@ class FavoritePage extends StatelessWidget {
                                   trailing: IconButton(
                                     icon: const Icon(Icons.delete),
                                     onPressed: () async {
+                                      context.showSnackBar(
+                                        AppLocalizations.localize(86),
+                                      );
                                       await appStorage.setFavoriteStops(stops..remove(stop));
                                       setState(() {});
                                     },

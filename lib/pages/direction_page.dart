@@ -10,7 +10,7 @@ import '/repositories/app_storage.dart';
 class DirectionPage extends SearchDelegate<String> {
   Stop? from, to;
   final directionFocusNode = FocusNode();
-  final directionTextController = TextEditingController();
+  late final directionTextController = TextEditingController(text: to?.name);
 
   DirectionPage({this.from, this.to})
       : super(
@@ -40,7 +40,7 @@ class DirectionPage extends SearchDelegate<String> {
         child: IconButton(
           tooltip: AppLocalizations.localize(69),
           icon: const Icon(Icons.clear),
-          onPressed: () => query = '',
+          onPressed: () => query = empty,
         ),
       ),
       IconButton(
@@ -88,12 +88,7 @@ class DirectionPage extends SearchDelegate<String> {
       elevation: 0,
       title: TextField(
         focusNode: directionFocusNode,
-        controller: directionTextController
-          ..addListener(() {
-            from = null;
-            to = null;
-            query = query;
-          }),
+        controller: directionTextController..addListener(() => query = query),
         decoration: InputDecoration(
           hintText: AppLocalizations.localize(68),
         ),
@@ -107,6 +102,9 @@ class DirectionPage extends SearchDelegate<String> {
         onPressed: !enabled
             ? null
             : () {
+                final stop = from;
+                from = to;
+                to = stop;
                 final text = query;
                 query = directionTextController.text;
                 directionTextController
@@ -184,7 +182,12 @@ class DirectionPage extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     return from == null || to == null
-        ? const Text('Điểm dừng đã chọn không chính xác')
+        ? Center(
+            child: Text(
+              'Điểm dừng đã chọn không chính xác',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          )
         : FutureBuilder(
             future: GeolocatorService.direct(from!, to!),
             builder: (context, snapshot) {
