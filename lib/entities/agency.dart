@@ -2,17 +2,6 @@ import '/exports/entities.dart';
 
 class Agency extends Comparable {
   static final Map<String, Agency> _shelf = {};
-  static const empty = Agency._(
-    '',
-    name: '',
-    fax: '',
-    phone: '',
-    email: '',
-    address: '',
-    website: '',
-    description: '',
-    images: [],
-  );
 
   final String name;
   final String email;

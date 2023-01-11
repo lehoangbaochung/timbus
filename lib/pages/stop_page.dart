@@ -140,12 +140,12 @@ class StopPage extends StatelessWidget {
                         ),
                         children: [
                           TextButton(
-                            onPressed: () async {
+                            onPressed: () {
                               Navigator.pop(context);
-                              await showSearch(
-                                context: context,
-                                query: stop.name,
-                                delegate: DirectionPage(from: stop),
+                              AppPages.push(
+                                context,
+                                AppPages.direction.path,
+                                {'from': stop},
                               );
                             },
                             child: Text(
@@ -153,11 +153,12 @@ class StopPage extends StatelessWidget {
                             ),
                           ),
                           TextButton(
-                            onPressed: () async {
+                            onPressed: () {
                               Navigator.pop(context);
-                              await showSearch(
-                                context: context,
-                                delegate: DirectionPage(to: stop),
+                              AppPages.push(
+                                context,
+                                AppPages.direction.path,
+                                {'to': stop},
                               );
                             },
                             child: Text(

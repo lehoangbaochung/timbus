@@ -5,6 +5,8 @@
 import 'dart:convert' show ascii;
 import 'dart:math' as math show pow;
 
+import 'package:latlong2/latlong.dart';
+
 /// Polyline encoding is a lossy compression algorithm that allows you to
 /// store a series of coordinates as a single string. Point coordinates
 /// are encoded using signed values. If you only have a few static points,
@@ -302,4 +304,15 @@ List<List<num>> decodePolyline(String polyline, {int accuracyExponent = 5}) {
   }
 
   return coordinates;
+}
+
+List<LatLng> unpackPolyline(List<List<num>> coordinates) {
+  return coordinates
+      .map(
+        (point) => LatLng(
+          point[0].toDouble(),
+          point[1].toDouble(),
+        ),
+      )
+      .toList();
 }

@@ -94,8 +94,12 @@ class AgencyPage extends StatelessWidget {
                     tabBar: TabBar(
                       indicatorColor: Theme.of(context).colorScheme.onPrimary,
                       tabs: [
-                        Tab(text: AppLocalizations.localize(8)),
-                        Tab(text: AppLocalizations.localize(19)),
+                        Tab(
+                          text: AppLocalizations.localize(8),
+                        ),
+                        Tab(
+                          text: AppLocalizations.localize(19),
+                        ),
                       ],
                     ),
                   ),

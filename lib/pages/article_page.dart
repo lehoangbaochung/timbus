@@ -24,11 +24,11 @@ class ArticleMasterPage extends StatelessWidget {
           bottom: TabBar(
             tabs: [
               Tab(
-                text: AppLocalizations.localize(76),
+                text: AppLocalizations.localize(35),
                 icon: const Icon(Icons.directions_bus),
               ),
               Tab(
-                text: AppLocalizations.localize(77),
+                text: AppLocalizations.localize(36),
                 icon: const Icon(Icons.newspaper_sharp),
               ),
             ],

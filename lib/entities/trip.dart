@@ -41,8 +41,8 @@ class Trip {
       distance: fields['distance'],
       description: fields['description'],
       schedule: {
-        DayOfWeek.weekday: schedule['weekday']!.split(separator),
-        DayOfWeek.weekend: schedule['weekend']!.split(separator),
+        DayOfWeek.weekday: schedule['weekday']!.split(separator).map((e) => e.trim()),
+        DayOfWeek.weekend: schedule['weekend']!.split(separator).map((e) => e.trim()),
       },
     ).._stops = stopsString.split(separator);
   }
@@ -63,7 +63,7 @@ class Trip {
 
   String getActiveTime(DayOfWeek dayOfWeek) {
     final timeline = schedule[dayOfWeek] ?? [];
-    return '${timeline.first.trim()} -${timeline.last.trim()}';
+    return '${timeline.first.trim()} - ${timeline.last.trim()}';
   }
 
   Iterable<int> getTimes(DayOfWeek dayOfWeek) {

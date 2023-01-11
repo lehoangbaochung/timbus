@@ -82,14 +82,6 @@ class LookupPage extends StatelessWidget {
                             },
                           );
                   }
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                        'Vui lòng kiểm tra lại kết nối mạng',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    );
-                  }
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
@@ -118,7 +110,7 @@ class LookupPage extends StatelessWidget {
                                   child: Icon(Icons.bus_alert),
                                 ),
                                 title: Text(stop.name),
-                                subtitle: stop.name == stop.description ? null : Text(stop.description),
+                                subtitle: stop.description.isEmpty || stop.name == stop.description ? null : Text(stop.description),
                                 onTap: () => AppPages.push(context, AppPages.stop.path, stop),
                               );
                             },

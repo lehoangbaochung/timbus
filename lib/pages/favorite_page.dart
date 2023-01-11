@@ -48,28 +48,68 @@ class FavoritePage extends StatelessWidget {
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         )
-                      : ListView.builder(
-                          itemCount: routes.length,
-                          itemBuilder: (context, index) {
-                            final route = routes.elementAt(index);
-                            return ListTile(
-                              title: Text(
-                                route.getName(),
-                              ),
-                              leading: CircleAvatar(
-                                backgroundColor: Colors.blue,
-                                foregroundColor: Colors.white,
-                                child: Text(route.id),
-                              ),
-                              trailing: IconButton(
-                                padding: EdgeInsets.zero,
-                                icon: const Icon(Icons.delete),
-                                onPressed: () async {},
-                              ),
-                              onTap: () => AppPages.push(context, AppPages.route.path, route),
-                            );
-                          },
-                        );
+                      : StatefulBuilder(builder: (context, setState) {
+                          return ListView.builder(
+                            itemCount: routes.length,
+                            itemBuilder: (context, index) {
+                              final route = routes.elementAt(index);
+                              return ListTile(
+                                title: Text(
+                                  route.getName(),
+                                ),
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.blue,
+                                  foregroundColor: Colors.white,
+                                  child: Text(route.id),
+                                ),
+                                trailing: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text(
+                                            '${AppLocalizations.localize(14)} ${route.id}: ${route.getName()}',
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          content: Text(
+                                            AppLocalizations.localize(87),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(context),
+                                              child: Text(
+                                                AppLocalizations.localize(70),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                context.showSnackBar(
+                                                  AppLocalizations.localize(86),
+                                                );
+                                                await appStorage.setFavoriteRoutes(
+                                                  routes..remove(route),
+                                                );
+                                                setState(() {});
+                                              },
+                                              child: Text(
+                                                AppLocalizations.localize(69),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
+                                onTap: () => AppPages.push(context, AppPages.route.path, route),
+                              );
+                            },
+                          );
+                        });
                 }
                 return centeredLoadingIndicator;
               },
@@ -103,11 +143,43 @@ class FavoritePage extends StatelessWidget {
                                   trailing: IconButton(
                                     icon: const Icon(Icons.delete),
                                     onPressed: () async {
-                                      context.showSnackBar(
-                                        AppLocalizations.localize(86),
+                                      await showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text(
+                                              stop.name,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            content: Text(
+                                              AppLocalizations.localize(87),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(context),
+                                                child: Text(
+                                                  AppLocalizations.localize(70),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  context.showSnackBar(
+                                                    AppLocalizations.localize(86),
+                                                  );
+                                                  await appStorage.setFavoriteStops(
+                                                    stops..remove(stop),
+                                                  );
+                                                  setState(() {});
+                                                },
+                                                child: Text(
+                                                  AppLocalizations.localize(69),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
                                       );
-                                      await appStorage.setFavoriteStops(stops..remove(stop));
-                                      setState(() {});
                                     },
                                   ),
                                   onTap: () => AppPages.push(context, AppPages.stop.path, stop),

@@ -31,15 +31,16 @@ class HomePage extends StatelessWidget {
       drawer: Drawer(
         child: ListView(
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
+                color: Colors.blue,
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/images/favicon.png',
+                  ),
+                ),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: const [],
-              ),
+              child: SizedBox.shrink(),
             ),
             ListTile(
               selected: true,
@@ -127,12 +128,7 @@ class HomePage extends StatelessWidget {
             heroTag: null,
             tooltip: AppLocalizations.localize(10),
             child: const Icon(Icons.directions),
-            onPressed: () async {
-              await showSearch(
-                context: context,
-                delegate: DirectionPage(),
-              );
-            },
+            onPressed: () => AppPages.push(context, AppPages.direction.path),
           ),
           const SizedBox(height: 8),
           FloatingActionButton(

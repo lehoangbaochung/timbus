@@ -27,32 +27,26 @@ class AboutPage extends StatelessWidget {
             leading: Icons.directions,
             trailing: Icons.arrow_right,
             title: AppLocalizations.localize(10),
-            subtitle: AppLocalizations.localize(87),
-            onTap: () => showSearch(
-              context: context,
-              delegate: DirectionPage(),
-            ),
+            subtitle: AppLocalizations.localize(57),
+            onTap: () => AppPages.push(context, AppPages.direction.path),
           ),
           MenuTile(
             leading: Icons.manage_search,
             trailing: Icons.arrow_right,
             title: AppLocalizations.localize(4),
-            subtitle: AppLocalizations.localize(88),
+            subtitle: AppLocalizations.localize(58),
             onTap: () => AppPages.push(context, AppPages.lookup.path),
           ),
           MenuTile(
             title: AppLocalizations.localize(2),
-            subtitle: AppLocalizations.localize(89),
+            subtitle: AppLocalizations.localize(59),
             leading: Icons.follow_the_signs,
             trailing: Icons.arrow_right,
-            onTap: () => showSearch(
-              context: context,
-              delegate: DirectionPage(),
-            ),
+            onTap: () => AppPages.push(context, AppPages.favorite.path),
           ),
           MenuTile(
             title: AppLocalizations.localize(50),
-            subtitle: AppLocalizations.localize(90),
+            subtitle: AppLocalizations.localize(60),
             leading: Icons.support,
             trailing: Icons.arrow_right,
             onTap: () => context.launch(

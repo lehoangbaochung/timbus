@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart' hide Route;
 import 'package:go_router/go_router.dart';
 
+import '../exports/entities.dart';
 import '../pages/about_page.dart';
 import '../pages/agency_page.dart';
 import '../pages/article_page.dart';
+import '../pages/direction_page.dart';
 import '../pages/favorite_page.dart';
 import '../pages/feedback_page.dart';
 import '../pages/help_page.dart';
@@ -13,15 +15,14 @@ import '../pages/place_page.dart';
 import '../pages/route_page.dart';
 import '../pages/settings_page.dart';
 import '../pages/stop_page.dart';
-import '../exports/entities.dart';
 
-export '../pages/direction_page.dart';
 export '../pages/search_page.dart';
 
 enum AppPages {
   about,
   agency,
   article,
+  direction,
   favorite,
   feedback,
   help,
@@ -72,6 +73,17 @@ enum AppPages {
         GoRoute(
           path: AppPages.settings.path,
           builder: (_, __) => const SettingsPage(),
+        ),
+        GoRoute(
+          path: AppPages.direction.path,
+          builder: (_, state) {
+            if (state.extra == null) return DirectionPage();
+            final params = state.extra as Map<String, dynamic>;
+            return DirectionPage(
+              from: params['from'] as Stop?,
+              to: params['to'] as Stop?,
+            );
+          },
         ),
         GoRoute(
           path: AppPages.agency.path,

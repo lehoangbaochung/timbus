@@ -5,7 +5,7 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../app/localizations.dart';
+import '/app/localizations.dart';
 import '/exports/entities.dart';
 import '/exports/widgets.dart';
 import '/extensions/geolocator.dart';
@@ -31,8 +31,8 @@ class _RoutePageState extends State<RoutePage> {
 
   final mapController = MapController();
   final fullscreenMode = ValueNotifier(false);
-  final currentStep = ValueNotifier(0);
   var currentStop = 0;
+  var isWeekday = true;
   final currentTab = ValueNotifier(1);
 
   @override
@@ -80,7 +80,6 @@ class _RoutePageState extends State<RoutePage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final stops = snapshot.requireData.toList();
-            final schedule = trip.schedule[DayOfWeek.weekday] ?? [];
             return Column(
               children: [
                 Expanded(
@@ -109,14 +108,16 @@ class _RoutePageState extends State<RoutePage> {
                               Polyline(
                                 strokeWidth: 3,
                                 color: Colors.blue,
-                                points: decodePolyline(
-                                  encodePolyline(
-                                    stops.map((stop) {
-                                      final position = stop.position;
-                                      return [position.latitude, position.longitude];
-                                    }).toList(),
+                                points: unpackPolyline(
+                                  decodePolyline(
+                                    encodePolyline(
+                                      stops.map((stop) {
+                                        final position = stop.position;
+                                        return [position.latitude, position.longitude];
+                                      }).toList(),
+                                    ),
                                   ),
-                                ).unpackPolyline(),
+                                ),
                               ),
                             ],
                           ),
@@ -269,9 +270,15 @@ class _RoutePageState extends State<RoutePage> {
                                 indicatorColor: Theme.of(context).colorScheme.onPrimary,
                                 onTap: (index) => currentTab.value = index,
                                 tabs: [
-                                  Tab(text: AppLocalizations.localize(17)),
-                                  Tab(text: AppLocalizations.localize(18)),
-                                  Tab(text: AppLocalizations.localize(19)),
+                                  Tab(
+                                    text: AppLocalizations.localize(17),
+                                  ),
+                                  Tab(
+                                    text: AppLocalizations.localize(18),
+                                  ),
+                                  Tab(
+                                    text: AppLocalizations.localize(19),
+                                  ),
                                 ],
                               ),
                             ),
@@ -279,59 +286,79 @@ class _RoutePageState extends State<RoutePage> {
                           body: TabBarView(
                             children: [
                               // Schedule
-                              Stack(
-                                children: [
-                                  ListView.builder(
-                                    itemCount: schedule.length,
-                                    itemBuilder: (context, index) {
-                                      return ListTile(
-                                        title: Text(
-                                          schedule.elementAt(index),
+                              StatefulBuilder(
+                                builder: (context, setState) {
+                                  final schedule = trip.schedule[isWeekday ? DayOfWeek.weekday : DayOfWeek.weekend] ?? [];
+                                  return Stack(
+                                    children: [
+                                      ListView.builder(
+                                        itemCount: schedule.length,
+                                        itemBuilder: (context, index) {
+                                          return ListTile(
+                                            title: Text(
+                                              schedule.elementAt(index),
+                                            ),
+                                            leading: const CircleAvatar(
+                                              foregroundColor: Colors.blue,
+                                              child: Icon(Icons.schedule),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      Positioned(
+                                        right: 16,
+                                        bottom: 16,
+                                        child: ToggleButtons(
+                                          direction: Axis.vertical,
+                                          isSelected: [isWeekday, !isWeekday],
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 8,
+                                              ),
+                                              child: Text(
+                                                AppLocalizations.localize(26),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(
+                                                horizontal: 8,
+                                              ),
+                                              child: Text(
+                                                AppLocalizations.localize(27),
+                                              ),
+                                            ),
+                                          ],
+                                          onPressed: (value) {
+                                            setState(() {
+                                              isWeekday = value == 0 ? true : false;
+                                            });
+                                          },
                                         ),
-                                        leading: const CircleAvatar(
-                                          foregroundColor: Colors.blue,
-                                          child: Icon(Icons.schedule),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                  Positioned(
-                                    right: 16,
-                                    bottom: 16,
-                                    child: ToggleButtons(
-                                      direction: Axis.vertical,
-                                      isSelected: const [true, false],
-                                      children: const [Icon(Icons.work), Icon(Icons.weekend)],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              // Stops
-                              ValueListenableBuilder(
-                                valueListenable: currentStep,
-                                builder: (context, value, child) {
-                                  return Stepper(
-                                    key: UniqueKey(),
-                                    currentStep: value,
-                                    controlsBuilder: (_, __) => Container(),
-                                    onStepTapped: (index) {
-                                      currentStop = index;
-                                      currentStep.value = index;
-                                      final stop = stops.elementAt(index);
-                                      mapController.moveAndRotate(stop.position, mapController.zoom, 0);
-                                    },
-                                    steps: stops.map((stop) {
-                                      final index = stops.indexOf(stop);
-                                      return Step(
-                                        title: Text(stop.name),
-                                        subtitle: stop.description.isEmpty ? null : Text(stop.description),
-                                        content: const SizedBox.shrink(),
-                                        state: index == value ? StepState.editing : StepState.indexed,
-                                        isActive: index == value || index == 0 || index == stops.length - 1,
-                                      );
-                                    }).toList(),
+                                      ),
+                                    ],
                                   );
                                 },
+                              ),
+                              // Stops
+                              Stepper(
+                                key: UniqueKey(),
+                                currentStep: currentStop,
+                                controlsBuilder: (_, __) => Container(),
+                                onStepTapped: (index) {
+                                  currentStop = index;
+                                  final stop = stops.elementAt(index);
+                                  mapController.moveAndRotate(stop.position, mapController.zoom, 0);
+                                },
+                                steps: stops.map((stop) {
+                                  final index = stops.indexOf(stop);
+                                  return Step(
+                                    title: Text(stop.name),
+                                    subtitle: stop.description.isEmpty || stop.name == stop.description ? null : Text(stop.description),
+                                    content: const SizedBox.shrink(),
+                                    isActive: index == 0 || index == stops.length - 1,
+                                  );
+                                }).toList(),
                               ),
                               // Details
                               ListView(

@@ -1,15 +1,13 @@
 import 'dart:math';
 
-import 'package:bus/exports/entities.dart';
-import 'package:bus/repositories/app_storage.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
+import '/exports/entities.dart';
+import '/repositories/app_storage.dart';
+
 class GeolocatorService {
   static Future<Position> getCurrentPosition() async {
-    // if (!await Geolocator.isLocationServiceEnabled()) {
-    //   return Future.error('Location services are disabled.');
-    // }
     await Geolocator.requestPermission();
     final currentPosition = await Geolocator.getCurrentPosition();
     final lastKnownPosition = await Geolocator.getLastKnownPosition();
@@ -36,10 +34,13 @@ class GeolocatorService {
     for (final route in routes) {
       final inboundStops = await route.getTrip(TripOfRoute.inbound).stops;
       final outboundStops = await route.getTrip(TripOfRoute.outbound).stops;
-      if (inboundStops.contains(from) && inboundStops.contains(to) || outboundStops.contains(from) && outboundStops.contains(to)) {
+      if ((inboundStops.contains(from) && inboundStops.contains(to)) ||
+          (outboundStops.contains(from) && outboundStops.contains(to)) ||
+          (inboundStops.contains(from) && outboundStops.contains(to)) ||
+          (outboundStops.contains(from) && inboundStops.contains(to))) {
         return [route];
       } else {
-        if (outboundStops.contains(from)) {}
+        //final routes = <Route>[];
       }
     }
     return [];
@@ -48,8 +49,4 @@ class GeolocatorService {
 
 extension PositionX on Position {
   LatLng toLatLng() => LatLng(latitude, longitude);
-}
-
-extension PolylineX on List<List<num>> {
-  List<LatLng> unpackPolyline() => map((point) => LatLng(point[0].toDouble(), point[1].toDouble())).toList();
 }
