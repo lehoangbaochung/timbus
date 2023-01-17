@@ -19,14 +19,14 @@ class Stop extends Comparable {
     required this.position,
   });
 
-  factory Stop.fromJson(String id, Map<String, dynamic> json) {
+  factory Stop.fromJson(String id, Map<String, dynamic> fields) {
     return _shelf.putIfAbsent(id, () {
-      final positionString = json['position'] as String;
+      final positionString = fields['position'] as String;
       final positionNumbers = positionString.split(separator).map((e) => double.tryParse(e) ?? 0);
       return Stop._(
         id,
-        name: json['name'],
-        description: json['description'] ?? '',
+        name: fields['name'],
+        description: fields['description'] ?? '',
         position: LatLng(positionNumbers.first, positionNumbers.last),
       );
     });

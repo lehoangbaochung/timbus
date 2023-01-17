@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 extension BuildContextX on BuildContext {
   /// Returns the [BuildContext] of the nearest ancestor of the given type.
@@ -13,7 +12,7 @@ extension BuildContextX on BuildContext {
         return true;
       }
     } on SocketException catch (e) {
-      showSnackBar(e.message);
+      showSnackBar(e.message); 
     }
     return false;
   }
@@ -30,14 +29,6 @@ extension BuildContextX on BuildContext {
           duration: const Duration(seconds: 2),
         ),
       );
-  }
-
-  /// Launch the given [url] can be handled by some app installed on the device.
-  void launch(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    }
   }
 
   /// Copy [text] into clipboard then shows a [SnackBar] with a [message] to user.

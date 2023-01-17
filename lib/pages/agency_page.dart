@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../app/localizations.dart';
 import '/entities/agency.dart';
 import '/exports/widgets.dart';
-import '/extensions/context.dart';
+import '/repositories/app_storage.dart';
 
 class AgencyPage extends StatelessWidget {
   final Agency agency;
@@ -71,7 +71,7 @@ class AgencyPage extends StatelessWidget {
                                   );
                                 }).toList(),
                               ),
-                            )
+                            ),
                           ],
                         );
                       },
@@ -91,14 +91,14 @@ class AgencyPage extends StatelessWidget {
                   ),
                   bottom: ColoredTabBar(
                     color: Theme.of(context).colorScheme.primary,
-                    tabBar: TabBar(
+                    child: TabBar(
                       indicatorColor: Theme.of(context).colorScheme.onPrimary,
                       tabs: [
                         Tab(
-                          text: AppLocalizations.localize(8),
+                          text: appStorage.localize(37),
                         ),
                         Tab(
-                          text: AppLocalizations.localize(19),
+                          text: appStorage.localize(19),
                         ),
                       ],
                     ),
@@ -114,40 +114,104 @@ class AgencyPage extends StatelessWidget {
                 ),
                 ListView(
                   children: [
-                    MenuTile(
-                      leading: Icons.phone,
-                      trailing: Icons.open_in_new,
-                      title: 'Điện thoại',
-                      subtitle: agency.phone,
-                      onTap: () => context.launch('tel:${agency.phone}'),
+                    ListTile(
+                      leading: const CircleAvatar(
+                        child: Icon(Icons.call),
+                      ),
+                      trailing: const SizedBox(
+                        height: double.infinity,
+                        child: Icon(Icons.open_in_new),
+                      ),
+                      title: Text(
+                        appStorage.localize(88),
+                      ),
+                      subtitle: Text(agency.phone),
+                      onTap: () async {
+                        await launchUrl(
+                          Uri.parse('tel:${agency.phone}'),
+                        );
+                      },
                     ),
-                    MenuTile(
-                      leading: Icons.fax,
-                      trailing: Icons.open_in_new,
-                      title: 'Fax',
-                      subtitle: agency.fax,
-                      onTap: () => context.launch('tel:${agency.fax}'),
+                    ListTile(
+                      leading: const CircleAvatar(
+                        child: Icon(Icons.fax),
+                      ),
+                      trailing: const SizedBox(
+                        height: double.infinity,
+                        child: Icon(Icons.open_in_new),
+                      ),
+                      title: Text(
+                        appStorage.localize(89),
+                      ),
+                      subtitle: Text(agency.fax),
+                      onTap: () async {
+                        await launchUrl(
+                          Uri.parse('tel:${agency.phone}'),
+                        );
+                      },
                     ),
-                    MenuTile(
-                      leading: Icons.email,
-                      trailing: Icons.open_in_new,
-                      title: 'Email',
-                      subtitle: agency.email,
-                      onTap: () => context.launch('mailto:${agency.email}'),
+                    ListTile(
+                      leading: const CircleAvatar(
+                        child: Icon(Icons.email),
+                      ),
+                      trailing: const SizedBox(
+                        height: double.infinity,
+                        child: Icon(Icons.open_in_new),
+                      ),
+                      title: Text(
+                        appStorage.localize(90),
+                      ),
+                      subtitle: Text(agency.email),
+                      onTap: () async {
+                        await launchUrl(
+                          Uri.parse('mailto:${agency.email}'),
+                        );
+                      },
                     ),
-                    MenuTile(
-                      leading: Icons.map,
-                      trailing: Icons.open_in_new,
-                      title: 'Địa chỉ',
-                      subtitle: agency.address,
-                      onTap: () => context.launch('https://www.google.com/maps/search/${agency.address}'),
+                    ListTile(
+                      leading: const SizedBox(
+                        height: double.infinity,
+                        child: CircleAvatar(
+                          child: Icon(Icons.map),
+                        ),
+                      ),
+                      trailing: const SizedBox(
+                        height: double.infinity,
+                        child: Icon(Icons.open_in_new),
+                      ),
+                      title: Text(
+                        appStorage.localize(91),
+                      ),
+                      subtitle: Text(agency.address),
+                      onTap: () async {
+                        await launchUrl(
+                          Uri.parse(
+                            'https://www.google.com/maps/search/${agency.address}',
+                          ),
+                        );
+                      },
                     ),
-                    MenuTile(
-                      leading: Icons.web,
-                      trailing: Icons.open_in_new,
-                      title: 'Website',
-                      subtitle: agency.website,
-                      onTap: () => context.launch(agency.website),
+                    ListTile(
+                      isThreeLine: true,
+                      leading: const SizedBox(
+                        height: double.infinity,
+                        child: CircleAvatar(
+                          child: Icon(Icons.web),
+                        ),
+                      ),
+                      trailing: const SizedBox(
+                        height: double.infinity,
+                        child: Icon(Icons.open_in_new),
+                      ),
+                      title: Text(
+                        appStorage.localize(92),
+                      ),
+                      subtitle: Text(agency.website),
+                      onTap: () async {
+                        await launchUrl(
+                          Uri.parse(agency.website),
+                        );
+                      },
                     ),
                   ],
                 ),

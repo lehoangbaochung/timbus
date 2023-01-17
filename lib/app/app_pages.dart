@@ -2,7 +2,6 @@ import 'package:flutter/material.dart' hide Route;
 import 'package:go_router/go_router.dart';
 
 import '../exports/entities.dart';
-import '../pages/about_page.dart';
 import '../pages/agency_page.dart';
 import '../pages/article_page.dart';
 import '../pages/direction_page.dart';
@@ -19,7 +18,6 @@ import '../pages/stop_page.dart';
 export '../pages/search_page.dart';
 
 enum AppPages {
-  about,
   agency,
   article,
   direction,
@@ -55,10 +53,6 @@ enum AppPages {
           builder: (_, __) => const HelpPage(),
         ),
         GoRoute(
-          path: AppPages.about.path,
-          builder: (_, __) => const AboutPage(),
-        ),
-        GoRoute(
           path: AppPages.lookup.path,
           builder: (_, __) => const LookupPage(),
         ),
@@ -77,12 +71,8 @@ enum AppPages {
         GoRoute(
           path: AppPages.direction.path,
           builder: (_, state) {
-            if (state.extra == null) return DirectionPage();
-            final params = state.extra as Map<String, dynamic>;
-            return DirectionPage(
-              from: params['from'] as Stop?,
-              to: params['to'] as Stop?,
-            );
+            final params = state.extra as Map<String, dynamic>?;
+            return DirectionPage(from: params?['from'] as Stop?, to: params?['to'] as Stop?);
           },
         ),
         GoRoute(

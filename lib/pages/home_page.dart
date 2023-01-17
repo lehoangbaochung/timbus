@@ -1,9 +1,8 @@
-import 'package:bus/app/localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '../app/pages.dart';
+import '/app/app_pages.dart';
 import '/extensions/geolocator.dart';
 import '/repositories/app_storage.dart';
 
@@ -18,12 +17,12 @@ class HomePage extends StatelessWidget {
         titleSpacing: 0,
         centerTitle: true,
         title: Text(
-          AppLocalizations.localize(0),
+          appStorage.localize(0),
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.star_border),
-            tooltip: AppLocalizations.localize(2),
+            tooltip: appStorage.localize(2),
             onPressed: () => AppPages.push(context, AppPages.favorite.path),
           ),
         ],
@@ -47,14 +46,14 @@ class HomePage extends StatelessWidget {
               minLeadingWidth: 0,
               leading: const Icon(Icons.home),
               title: Text(
-                AppLocalizations.localize(3),
+                appStorage.localize(3),
               ),
               onTap: () => AppPages.pop(context),
             ),
             ListTile(
               minLeadingWidth: 0,
               title: Text(
-                AppLocalizations.localize(4),
+                appStorage.localize(4),
               ),
               leading: const Icon(Icons.manage_search),
               onTap: () {
@@ -65,7 +64,7 @@ class HomePage extends StatelessWidget {
             ListTile(
               minLeadingWidth: 0,
               title: Text(
-                AppLocalizations.localize(5),
+                appStorage.localize(5),
               ),
               leading: const Icon(Icons.newspaper),
               onTap: () {
@@ -76,7 +75,7 @@ class HomePage extends StatelessWidget {
             ListTile(
               minLeadingWidth: 0,
               title: Text(
-                AppLocalizations.localize(6),
+                appStorage.localize(6),
               ),
               leading: const Icon(Icons.settings),
               onTap: () {
@@ -87,7 +86,18 @@ class HomePage extends StatelessWidget {
             ListTile(
               minLeadingWidth: 0,
               title: Text(
-                AppLocalizations.localize(7),
+                appStorage.localize(8),
+              ),
+              leading: const Icon(Icons.place),
+              onTap: () {
+                AppPages.pop(context);
+                AppPages.push(context, AppPages.place.path);
+              },
+            ),
+            ListTile(
+              minLeadingWidth: 0,
+              title: Text(
+                appStorage.localize(7),
               ),
               leading: const Icon(Icons.person),
               onTap: () {
@@ -98,18 +108,7 @@ class HomePage extends StatelessWidget {
             ListTile(
               minLeadingWidth: 0,
               title: Text(
-                AppLocalizations.localize(8),
-              ),
-              leading: const Icon(Icons.info),
-              onTap: () {
-                AppPages.pop(context);
-                AppPages.push(context, AppPages.about.path);
-              },
-            ),
-            ListTile(
-              minLeadingWidth: 0,
-              title: Text(
-                AppLocalizations.localize(9),
+                appStorage.localize(9),
               ),
               leading: const Icon(Icons.help),
               onTap: () {
@@ -126,14 +125,14 @@ class HomePage extends StatelessWidget {
         children: [
           FloatingActionButton(
             heroTag: null,
-            tooltip: AppLocalizations.localize(10),
+            tooltip: appStorage.localize(10),
             child: const Icon(Icons.directions),
             onPressed: () => AppPages.push(context, AppPages.direction.path),
           ),
           const SizedBox(height: 8),
           FloatingActionButton(
             heroTag: null,
-            tooltip: AppLocalizations.localize(11),
+            tooltip: appStorage.localize(11),
             child: const Icon(Icons.my_location),
             onPressed: () async {
               final position = await GeolocatorService.getCurrentPosition();

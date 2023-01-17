@@ -1,8 +1,7 @@
-import 'package:bus/app/localizations.dart';
 import 'package:flutter/material.dart' hide Route;
 
 import '/exports/entities.dart';
-import '/app/pages.dart';
+import '../app/app_pages.dart';
 import '/exports/widgets.dart';
 import '/repositories/app_storage.dart';
 
@@ -10,7 +9,7 @@ class SearchPage extends SearchDelegate<String> {
   SearchPage()
       : super(
           searchFieldStyle: const TextStyle(),
-          searchFieldLabel: AppLocalizations.localize(78),
+          searchFieldLabel: appStorage.localize(78),
         );
 
   @override
@@ -21,13 +20,13 @@ class SearchPage extends SearchDelegate<String> {
         child: IconButton(
           onPressed: () => query = '',
           icon: const Icon(Icons.clear),
-          tooltip: AppLocalizations.localize(69),
+          tooltip: appStorage.localize(69),
         ),
       ),
       IconButton(
         onPressed: query.isEmpty ? null : () => showResults(context),
         icon: const Icon(Icons.search),
-        tooltip: AppLocalizations.localize(78),
+        tooltip: appStorage.localize(78),
       ),
     ];
   }
@@ -37,7 +36,7 @@ class SearchPage extends SearchDelegate<String> {
     return IconButton(
       icon: const Icon(Icons.arrow_back),
       onPressed: () => close(context, query),
-      tooltip: AppLocalizations.localize(46),
+      tooltip: appStorage.localize(46),
     );
   }
 
@@ -67,7 +66,7 @@ class SearchPage extends SearchDelegate<String> {
                 return results.isEmpty
                     ? Center(
                         child: Text(
-                          AppLocalizations.localize(77),
+                          appStorage.localize(77),
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       )
@@ -119,7 +118,7 @@ class SearchPage extends SearchDelegate<String> {
     return query.isEmpty
         ? Center(
             child: Text(
-              AppLocalizations.localize(76),
+              appStorage.localize(76),
               style: Theme.of(context).textTheme.titleMedium,
             ),
           )

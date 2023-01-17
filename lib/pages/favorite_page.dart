@@ -1,9 +1,8 @@
-import 'package:bus/app/pages.dart';
+import 'package:bus/app/app_pages.dart';
 import 'package:bus/extensions/context.dart';
 import 'package:bus/repositories/app_storage.dart';
 import 'package:flutter/material.dart' hide Route;
 
-import '/app/localizations.dart';
 import '/exports/widgets.dart';
 
 class FavoritePage extends StatelessWidget {
@@ -18,17 +17,17 @@ class FavoritePage extends StatelessWidget {
           titleSpacing: 0,
           centerTitle: true,
           title: Text(
-            AppLocalizations.localize(2),
+            appStorage.localize(2),
           ),
           bottom: TabBar(
             tabs: [
               Tab(
                 icon: const Icon(Icons.directions_bus),
-                text: AppLocalizations.localize(12),
+                text: appStorage.localize(12),
               ),
               Tab(
                 icon: const Icon(Icons.bus_alert),
-                text: AppLocalizations.localize(13),
+                text: appStorage.localize(13),
               ),
             ],
           ),
@@ -44,7 +43,7 @@ class FavoritePage extends StatelessWidget {
                   return routes.isEmpty
                       ? Center(
                           child: Text(
-                            AppLocalizations.localize(71),
+                            appStorage.localize(71),
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         )
@@ -71,24 +70,24 @@ class FavoritePage extends StatelessWidget {
                                       builder: (context) {
                                         return AlertDialog(
                                           title: Text(
-                                            '${AppLocalizations.localize(14)} ${route.id}: ${route.getName()}',
+                                            route.getName(),
                                             maxLines: 2,
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           content: Text(
-                                            AppLocalizations.localize(87),
+                                            appStorage.localize(87),
                                           ),
                                           actions: [
                                             TextButton(
                                               onPressed: () => Navigator.pop(context),
                                               child: Text(
-                                                AppLocalizations.localize(70),
+                                                appStorage.localize(70),
                                               ),
                                             ),
                                             TextButton(
                                               onPressed: () async {
                                                 context.showSnackBar(
-                                                  AppLocalizations.localize(86),
+                                                  appStorage.localize(86),
                                                 );
                                                 await appStorage.setFavoriteRoutes(
                                                   routes..remove(route),
@@ -96,7 +95,7 @@ class FavoritePage extends StatelessWidget {
                                                 setState(() {});
                                               },
                                               child: Text(
-                                                AppLocalizations.localize(69),
+                                                appStorage.localize(69),
                                               ),
                                             ),
                                           ],
@@ -123,7 +122,7 @@ class FavoritePage extends StatelessWidget {
                   return stops.isEmpty
                       ? Center(
                           child: Text(
-                            AppLocalizations.localize(71),
+                            appStorage.localize(71),
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         )
@@ -138,7 +137,7 @@ class FavoritePage extends StatelessWidget {
                                   subtitle: Text(stop.description),
                                   leading: const CircleAvatar(
                                     foregroundColor: Colors.blue,
-                                    child: Icon(Icons.directions_bus),
+                                    child: Icon(Icons.bus_alert),
                                   ),
                                   trailing: IconButton(
                                     icon: const Icon(Icons.delete),
@@ -153,19 +152,19 @@ class FavoritePage extends StatelessWidget {
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                             content: Text(
-                                              AppLocalizations.localize(87),
+                                              appStorage.localize(87),
                                             ),
                                             actions: [
                                               TextButton(
                                                 onPressed: () => Navigator.pop(context),
                                                 child: Text(
-                                                  AppLocalizations.localize(70),
+                                                  appStorage.localize(70),
                                                 ),
                                               ),
                                               TextButton(
                                                 onPressed: () async {
                                                   context.showSnackBar(
-                                                    AppLocalizations.localize(86),
+                                                    appStorage.localize(86),
                                                   );
                                                   await appStorage.setFavoriteStops(
                                                     stops..remove(stop),
@@ -173,7 +172,7 @@ class FavoritePage extends StatelessWidget {
                                                   setState(() {});
                                                 },
                                                 child: Text(
-                                                  AppLocalizations.localize(69),
+                                                  appStorage.localize(69),
                                                 ),
                                               ),
                                             ],

@@ -1,6 +1,4 @@
-import 'package:bus/app/languages.dart';
-import 'package:bus/app/localizations.dart';
-import 'package:bus/extensions/context.dart';
+import 'package:bus/app/app_languages.dart';
 import 'package:bus/repositories/app_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +7,6 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appTheme = appStorage.getThemeMode();
     var appLanguage = AppLanguages.values.byName(
       appStorage.getLanguageCode(),
     );
@@ -18,21 +15,8 @@ class SettingsPage extends StatelessWidget {
         titleSpacing: 0,
         centerTitle: true,
         title: Text(
-          AppLocalizations.localize(6),
+          appStorage.localize(6),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: () async {
-              context.showSnackBar(
-                AppLocalizations.localize(83),
-              );
-              await appStorage.setThemeMode(appTheme);
-              await appStorage.setLanguageCode(appLanguage.name);
-            },
-            tooltip: AppLocalizations.localize(82),
-          ),
-        ],
       ),
       body: ListView(
         children: [
@@ -40,10 +24,10 @@ class SettingsPage extends StatelessWidget {
           StatefulBuilder(builder: (context, setState) {
             return ListTile(
               title: Text(
-                AppLocalizations.localize(61),
+                appStorage.localize(61),
                 style: const TextStyle(color: Colors.blue),
               ),
-              subtitle: Text(appLanguage.fullname),
+              subtitle: Text(appLanguage.localeName),
               trailing: const Icon(Icons.arrow_right),
               onTap: () async {
                 await showDialog(
@@ -51,7 +35,7 @@ class SettingsPage extends StatelessWidget {
                   builder: (context) {
                     return SimpleDialog(
                       title: Text(
-                        AppLocalizations.localize(61),
+                        appStorage.localize(61),
                       ),
                       children: AppLanguages.values.map(
                         (language) {
@@ -64,7 +48,7 @@ class SettingsPage extends StatelessWidget {
                                 appLanguage = value ?? appLanguage;
                               });
                             },
-                            title: Text(language.fullname),
+                            title: Text(language.localeName),
                           );
                         },
                       ).toList(),
@@ -75,16 +59,18 @@ class SettingsPage extends StatelessWidget {
             );
           }),
           // Theme
-          StatefulBuilder(
-            builder: (context, setState) {
+          StreamBuilder(
+            initialData: appStorage.getThemeMode(),
+            stream: appStorage.themeController.stream,
+            builder: (context, snapshot) {
+              final appTheme = snapshot.requireData;
               return ListTile(
                 trailing: const Icon(Icons.arrow_right),
                 title: Text(
-                  AppLocalizations.localize(62),
-                  style: const TextStyle(color: Colors.blue),
+                  appStorage.localize(62),
                 ),
                 subtitle: Text(
-                  appTheme ? AppLocalizations.localize(80) : AppLocalizations.localize(81),
+                  appTheme ? appStorage.localize(80) : appStorage.localize(81),
                 ),
                 onTap: () async {
                   await showDialog(
@@ -92,33 +78,33 @@ class SettingsPage extends StatelessWidget {
                     builder: (context) {
                       return SimpleDialog(
                         title: Text(
-                          AppLocalizations.localize(62),
+                          appStorage.localize(62),
                         ),
                         children: [
                           RadioListTile(
                             value: true,
                             groupValue: appTheme,
-                            onChanged: (value) {
-                              setState(() {
-                                Navigator.pop(context);
-                                appTheme = value ?? appTheme;
-                              });
+                            onChanged: (value) async {
+                              Navigator.pop(context);
+                              final mode = value ?? true;
+                              await appStorage.setThemeMode(mode);
+                              appStorage.themeController.add(mode);
                             },
                             title: Text(
-                              AppLocalizations.localize(80),
+                              appStorage.localize(80),
                             ),
                           ),
                           RadioListTile(
                             value: false,
                             groupValue: appTheme,
-                            onChanged: (value) {
-                              setState(() {
-                                Navigator.pop(context);
-                                appTheme = value ?? appTheme;
-                              });
+                            onChanged: (value) async {
+                              Navigator.pop(context);
+                              final mode = value ?? true;
+                              await appStorage.setThemeMode(mode);
+                              appStorage.themeController.add(mode);
                             },
                             title: Text(
-                              AppLocalizations.localize(81),
+                              appStorage.localize(81),
                             ),
                           ),
                         ],

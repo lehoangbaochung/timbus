@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '/app/localizations.dart';
 import '/entities/article.dart';
-import '/app/pages.dart';
+import '../app/app_pages.dart';
 import '/exports/widgets.dart';
 import '/extensions/context.dart';
 import '/repositories/app_storage.dart';
@@ -19,16 +20,16 @@ class ArticleMasterPage extends StatelessWidget {
           titleSpacing: 0,
           centerTitle: true,
           title: Text(
-            AppLocalizations.localize(5),
+            appStorage.localize(5),
           ),
           bottom: TabBar(
             tabs: [
               Tab(
-                text: AppLocalizations.localize(35),
+                text: appStorage.localize(35),
                 icon: const Icon(Icons.directions_bus),
               ),
               Tab(
-                text: AppLocalizations.localize(36),
+                text: appStorage.localize(36),
                 icon: const Icon(Icons.newspaper_sharp),
               ),
             ],
@@ -45,7 +46,7 @@ class ArticleMasterPage extends StatelessWidget {
                   return articles.isEmpty
                       ? Center(
                           child: Text(
-                            AppLocalizations.localize(71),
+                            appStorage.localize(71),
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         )
@@ -84,7 +85,7 @@ class ArticleMasterPage extends StatelessWidget {
                   return articles.isEmpty
                       ? Center(
                           child: Text(
-                            AppLocalizations.localize(71),
+                            appStorage.localize(71),
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         )
@@ -122,9 +123,9 @@ class ArticleMasterPage extends StatelessWidget {
 }
 
 class ArticleDetailPage extends StatelessWidget {
-  final Article article;
-
   const ArticleDetailPage(this.article, {super.key});
+
+  final Article article;
 
   @override
   Widget build(BuildContext context) {
@@ -186,11 +187,19 @@ class ArticleDetailPage extends StatelessWidget {
                   decoration: TextDecoration.underline,
                 ),
               ),
-              onTap: () => context.launch(article.source),
-              onLongPress: () {
-                context.copyToClipboard(
-                  article.source,
-                  message: AppLocalizations.localize(66),
+              onTap: () async {
+                await launchUrl(
+                  Uri.parse(article.source),
+                );
+              },
+              onLongPress: () async {
+                context.showSnackBar(
+                  appStorage.localize(66),
+                );
+                await Clipboard.setData(
+                  ClipboardData(
+                    text: article.source,
+                  ),
                 );
               },
             ),

@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 
 enum AppLanguages {
-  /// Vietnamese
-  vi('Tiếng Việt'),
-  
-  /// English
-  en('English');
+  en('English'),
+  vi('Tiếng Việt');
 
-  final String fullname;
+  const AppLanguages(this.localeName);
 
-  const AppLanguages(this.fullname);
+  final String localeName;
 
   /// The list of locales that this app has been localized for.
   static final supportedLocales = values.map((language) => Locale(language.name));

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '/app/localizations.dart';
+import '/repositories/app_storage.dart';
 
 class PromptTile extends StatelessWidget {
-  final String prompt;
-
   const PromptTile(this.prompt, {super.key});
 
+  final String prompt;
+  
   @override
   Widget build(BuildContext context) {
     var visible = true;
@@ -28,7 +28,7 @@ class PromptTile extends StatelessWidget {
             ),
             trailing: IconButton(
               icon: const Icon(Icons.close),
-              tooltip: AppLocalizations.localize(70),
+              tooltip: appStorage.localize(70),
               onPressed: () => setState(() => visible = false),
             ),
           ),

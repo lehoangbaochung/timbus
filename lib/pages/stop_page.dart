@@ -1,10 +1,10 @@
-import 'package:bus/app/localizations.dart';
+import 'package:bus/app/app_theme.dart';
 import 'package:bus/extensions/context.dart';
 import 'package:bus/repositories/app_storage.dart';
 import 'package:flutter/material.dart';
 
 import '/exports/entities.dart';
-import '/app/pages.dart';
+import '../app/app_pages.dart';
 import '/exports/widgets.dart';
 
 class StopPage extends StatelessWidget {
@@ -22,15 +22,15 @@ class StopPage extends StatelessWidget {
           titleSpacing: 0,
           centerTitle: true,
           title: Text(
-            AppLocalizations.localize(13),
+            appStorage.localize(13),
           ),
           bottom: TabBar(
             tabs: [
               Tab(
-                text: AppLocalizations.localize(30),
+                text: appStorage.localize(30),
               ),
               Tab(
-                text: AppLocalizations.localize(31),
+                text: appStorage.localize(31),
               ),
             ],
           ),
@@ -46,15 +46,16 @@ class StopPage extends StatelessWidget {
                       return IconButton(
                         onPressed: () async {
                           if (unsaved) {
-                            context.showSnackBar(AppLocalizations.localize(33));
+                            context.showSnackBar(appStorage.localize(33));
                             await appStorage.setFavoriteStops(stops..add(stop));
                           } else {
-                            context.showSnackBar(AppLocalizations.localize(34));
+                            context.showSnackBar(appStorage.localize(34));
                             await appStorage.setFavoriteStops(stops..remove(stop));
                           }
                           setState(() {});
                         },
                         icon: Icon(unsaved ? Icons.star_border : Icons.star),
+                        tooltip: unsaved ? appStorage.localize(72) : appStorage.localize(73),
                       );
                     }
                     return const SizedBox.shrink();
@@ -72,7 +73,7 @@ class StopPage extends StatelessWidget {
                   // Upcoming routes
                   Center(
                     child: Text(
-                      AppLocalizations.localize(32),
+                      appStorage.localize(32),
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
@@ -86,7 +87,7 @@ class StopPage extends StatelessWidget {
                         return routes.isEmpty
                             ? Center(
                                 child: Text(
-                                  AppLocalizations.localize(71),
+                                  appStorage.localize(71),
                                   style: Theme.of(context).textTheme.titleMedium,
                                 ),
                               )
@@ -99,8 +100,8 @@ class StopPage extends StatelessWidget {
                                       route.getName(routes[route]!),
                                     ),
                                     leading: CircleAvatar(
-                                      backgroundColor: Colors.blue,
-                                      foregroundColor: Colors.white,
+                                      backgroundColor: appTheme.primaryColor,
+                                      foregroundColor: appTheme.onSecondaryColor,
                                       child: Text(route.id),
                                     ),
                                     onTap: () => AppPages.push(context, AppPages.route.path, route),
@@ -117,17 +118,13 @@ class StopPage extends StatelessWidget {
             // Stop name
             ListTile(
               minLeadingWidth: 0,
-              textColor: Colors.white,
               tileColor: Colors.orangeAccent,
               leading: const Icon(
                 Icons.bus_alert,
                 color: Colors.white,
               ),
               trailing: InkWell(
-                child: const Icon(
-                  Icons.more_vert,
-                  color: Colors.white,
-                ),
+                child: const Icon(Icons.more_vert),
                 onTap: () {
                   showDialog(
                     context: context,
@@ -149,7 +146,7 @@ class StopPage extends StatelessWidget {
                               );
                             },
                             child: Text(
-                              AppLocalizations.localize(84),
+                              appStorage.localize(84),
                             ),
                           ),
                           TextButton(
@@ -162,7 +159,7 @@ class StopPage extends StatelessWidget {
                               );
                             },
                             child: Text(
-                              AppLocalizations.localize(85),
+                              appStorage.localize(85),
                             ),
                           ),
                         ],

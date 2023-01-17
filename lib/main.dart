@@ -1,26 +1,38 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-import '/repositories/app_storage.dart';
-import 'app/localizations.dart';
-import 'app/pages.dart';
-import 'firebase_options.dart';
+import 'app/app_pages.dart';
+import 'repositories/app_storage.dart';
 
 void main() async {
   FlutterNativeSplash.preserve(
     widgetsBinding: WidgetsFlutterBinding.ensureInitialized(),
   );
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  await AppLocalizations.initialize();
+  await appStorage.ensureInitialized();
   runApp(
-    MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      routerConfig: AppPages.routerConfig,
-      title: AppLocalizations.localize(0),
-      theme: appStorage.getThemeMode() ? ThemeData.light() : ThemeData.dark(),
+    StreamBuilder(
+      initialData: appStorage.getThemeMode(),
+      stream: appStorage.themeController.stream,
+      builder: (context, snapshot) {
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          routerConfig: AppPages.routerConfig,
+          title: appStorage.localize(0),
+          theme: snapshot.requireData
+              ? ThemeData.light().copyWith(
+                  colorScheme: ColorScheme.fromSwatch(
+                    primarySwatch: Colors.blue,
+                    brightness: Brightness.light,
+                  ),
+                )
+              : ThemeData.dark().copyWith(
+                  colorScheme: ColorScheme.fromSwatch(
+                    primarySwatch: Colors.teal,
+                    brightness: Brightness.dark,
+                  ),
+                ),
+        );
+      },
     ),
   );
   FlutterNativeSplash.remove();

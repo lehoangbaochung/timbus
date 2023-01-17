@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../app/localizations.dart';
-import '../app/pages.dart';
+import '../app/app_pages.dart';
 import '/exports/widgets.dart';
 import '/repositories/app_storage.dart';
 
@@ -18,16 +17,16 @@ class LookupPage extends StatelessWidget {
             titleSpacing: 0,
             centerTitle: true,
             title: Text(
-              AppLocalizations.localize(4),
+              appStorage.localize(4),
             ),
             bottom: TabBar(
               tabs: [
                 Tab(
-                  text: AppLocalizations.localize(12),
+                  text: appStorage.localize(12),
                   icon: const Icon(Icons.directions_bus),
                 ),
                 Tab(
-                  text: AppLocalizations.localize(13),
+                  text: appStorage.localize(13),
                   icon: const Icon(Icons.bus_alert),
                 ),
               ],
@@ -36,12 +35,12 @@ class LookupPage extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.help_outline),
                 onPressed: () => AppPages.push(context, AppPages.help.path),
-                tooltip: AppLocalizations.localize(9),
+                tooltip: appStorage.localize(9),
               ),
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            tooltip: AppLocalizations.localize(78),
+            tooltip: appStorage.localize(78),
             child: const Icon(Icons.search),
             onPressed: () => showSearch(
               context: context,
@@ -59,7 +58,7 @@ class LookupPage extends StatelessWidget {
                     return routes.isEmpty
                         ? Center(
                             child: Text(
-                              AppLocalizations.localize(71),
+                              appStorage.localize(71),
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           )
@@ -69,8 +68,8 @@ class LookupPage extends StatelessWidget {
                               final route = routes.elementAt(index);
                               return ListTile(
                                 leading: CircleAvatar(
-                                  backgroundColor: Colors.blue,
-                                  foregroundColor: Colors.white,
+                                  backgroundColor: Theme.of(context).colorScheme.primary,
+                                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                                   child: Text(
                                     route.id,
                                     textAlign: TextAlign.center,
@@ -82,9 +81,7 @@ class LookupPage extends StatelessWidget {
                             },
                           );
                   }
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return centeredLoadingIndicator;
                 },
               ),
               // Stops
@@ -96,7 +93,7 @@ class LookupPage extends StatelessWidget {
                     return stops.isEmpty
                         ? Center(
                             child: Text(
-                              AppLocalizations.localize(71),
+                              appStorage.localize(71),
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                           )

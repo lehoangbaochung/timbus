@@ -1,15 +1,14 @@
-import 'package:bus/app/pages.dart';
+import 'package:bus/app/app_pages.dart';
 import 'package:bus/extensions/context.dart';
 import 'package:bus/repositories/app_storage.dart';
 import 'package:flutter/material.dart' hide Route;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 
-import '/app/localizations.dart';
 import '/exports/entities.dart';
 import '/exports/widgets.dart';
 import '/extensions/geolocator.dart';
-import '/extensions/polylines.dart';
+import '../extensions/polyline.dart';
 
 class RoutePage extends StatefulWidget {
   final Route route;
@@ -53,14 +52,14 @@ class _RoutePageState extends State<RoutePage> {
                     final routes = snapshot.requireData.toList();
                     final unsaved = !routes.contains(route);
                     return IconButton(
-                      tooltip: AppLocalizations.localize(73),
+                      tooltip: appStorage.localize(73),
                       icon: Icon(unsaved ? Icons.star_border : Icons.star),
                       onPressed: () async {
                         if (unsaved) {
-                          context.showSnackBar(AppLocalizations.localize(33));
+                          context.showSnackBar(appStorage.localize(33));
                           await appStorage.setFavoriteRoutes(routes..add(route));
                         } else {
-                          context.showSnackBar(AppLocalizations.localize(34));
+                          context.showSnackBar(appStorage.localize(34));
                           await appStorage.setFavoriteRoutes(routes..remove(route));
                         }
                         setState(() {});
@@ -108,16 +107,11 @@ class _RoutePageState extends State<RoutePage> {
                               Polyline(
                                 strokeWidth: 3,
                                 color: Colors.blue,
-                                points: unpackPolyline(
-                                  decodePolyline(
-                                    encodePolyline(
-                                      stops.map((stop) {
-                                        final position = stop.position;
-                                        return [position.latitude, position.longitude];
-                                      }).toList(),
-                                    ),
+                                points: decodePolyline(
+                                  encodePolyline(
+                                    stops.map((stop) => stop.position),
                                   ),
-                                ),
+                                ).toList(),
                               ),
                             ],
                           ),
@@ -175,7 +169,7 @@ class _RoutePageState extends State<RoutePage> {
                           padding: const EdgeInsets.all(8.0),
                           child: FloatingActionButton(
                             mini: true,
-                            tooltip: AppLocalizations.localize(11),
+                            tooltip: appStorage.localize(11),
                             child: const Icon(Icons.my_location),
                             onPressed: () async {
                               final position = await GeolocatorService.getCurrentPosition();
@@ -200,7 +194,7 @@ class _RoutePageState extends State<RoutePage> {
                           style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Colors.white),
                         ),
                         leading: IconButton(
-                          tooltip: AppLocalizations.localize(15),
+                          tooltip: appStorage.localize(15),
                           color: Colors.white,
                           icon: const Icon(Icons.swap_vert),
                           onPressed: () {
@@ -218,7 +212,7 @@ class _RoutePageState extends State<RoutePage> {
                           },
                         ),
                         trailing: IconButton(
-                          tooltip: AppLocalizations.localize(74),
+                          tooltip: appStorage.localize(74),
                           color: Colors.white,
                           icon: const Icon(Icons.fullscreen_exit),
                           onPressed: () => fullscreenMode.value = false,
@@ -242,7 +236,7 @@ class _RoutePageState extends State<RoutePage> {
                             ),
                             leading: IconButton(
                               icon: const Icon(Icons.swap_vert),
-                              tooltip: AppLocalizations.localize(15),
+                              tooltip: appStorage.localize(15),
                               onPressed: () {
                                 setState(() {
                                   currentStop = 0;
@@ -260,24 +254,25 @@ class _RoutePageState extends State<RoutePage> {
                             actions: [
                               IconButton(
                                 icon: const Icon(Icons.fullscreen),
-                                tooltip: AppLocalizations.localize(29),
                                 onPressed: () => fullscreenMode.value = true,
+                                tooltip: fullscreenMode.value ? appStorage.localize(74) : appStorage.localize(75),
+
                               ),
                             ],
                             bottom: ColoredTabBar(
                               color: Theme.of(context).colorScheme.primary,
-                              tabBar: TabBar(
+                              child: TabBar(
                                 indicatorColor: Theme.of(context).colorScheme.onPrimary,
                                 onTap: (index) => currentTab.value = index,
                                 tabs: [
                                   Tab(
-                                    text: AppLocalizations.localize(17),
+                                    text: appStorage.localize(17),
                                   ),
                                   Tab(
-                                    text: AppLocalizations.localize(18),
+                                    text: appStorage.localize(18),
                                   ),
                                   Tab(
-                                    text: AppLocalizations.localize(19),
+                                    text: appStorage.localize(19),
                                   ),
                                 ],
                               ),
@@ -317,7 +312,7 @@ class _RoutePageState extends State<RoutePage> {
                                                 horizontal: 8,
                                               ),
                                               child: Text(
-                                                AppLocalizations.localize(26),
+                                                appStorage.localize(28),
                                               ),
                                             ),
                                             Padding(
@@ -325,7 +320,7 @@ class _RoutePageState extends State<RoutePage> {
                                                 horizontal: 8,
                                               ),
                                               child: Text(
-                                                AppLocalizations.localize(27),
+                                                appStorage.localize(29),
                                               ),
                                             ),
                                           ],
@@ -375,10 +370,10 @@ class _RoutePageState extends State<RoutePage> {
                                             child: Icon(Icons.factory),
                                           ),
                                           title: Text(
-                                            AppLocalizations.localize(20),
+                                            appStorage.localize(20),
                                           ),
                                           trailing: const Icon(Icons.arrow_right),
-                                          subtitle: Text(agency == null ? AppLocalizations.localize(72) : agency.name),
+                                          subtitle: Text(agency == null ? appStorage.localize(72) : agency.name),
                                           onTap: () => agency == null ? null : AppPages.push(context, AppPages.agency.path, agency),
                                         );
                                       }
@@ -392,10 +387,10 @@ class _RoutePageState extends State<RoutePage> {
                                       child: Icon(Icons.timeline),
                                     ),
                                     title: Text(
-                                      AppLocalizations.localize(21),
+                                      appStorage.localize(21),
                                     ),
                                     subtitle: Text(
-                                      '${trip.getTimes(DayOfWeek.weekday).join(' - ')} ${AppLocalizations.localize(23)}',
+                                      '${trip.getTimes(DayOfWeek.weekday).join(' - ')} ${appStorage.localize(26)}',
                                     ),
                                   ),
                                   // fare
@@ -405,9 +400,9 @@ class _RoutePageState extends State<RoutePage> {
                                       child: Icon(Icons.attach_money),
                                     ),
                                     title: Text(
-                                      AppLocalizations.localize(22),
+                                      appStorage.localize(22),
                                     ),
-                                    subtitle: Text('${trip.fare} ${AppLocalizations.localize(73)}'),
+                                    subtitle: Text('${trip.fare} ${appStorage.localize(27)}'),
                                   ),
                                   // distance
                                   ListTile(
@@ -416,7 +411,7 @@ class _RoutePageState extends State<RoutePage> {
                                       child: Icon(Icons.linear_scale_rounded),
                                     ),
                                     title: Text(
-                                      AppLocalizations.localize(24),
+                                      appStorage.localize(23),
                                     ),
                                     subtitle: Text('${trip.distance} km'),
                                   ),
@@ -427,7 +422,7 @@ class _RoutePageState extends State<RoutePage> {
                                       child: Icon(Icons.timelapse),
                                     ),
                                     title: Text(
-                                      AppLocalizations.localize(25),
+                                      appStorage.localize(24),
                                     ),
                                     subtitle: Text(
                                       trip.getActiveTime(DayOfWeek.weekday),
@@ -440,7 +435,7 @@ class _RoutePageState extends State<RoutePage> {
                                       child: Icon(Icons.route),
                                     ),
                                     title: Text(
-                                      AppLocalizations.localize(28),
+                                      appStorage.localize(25),
                                     ),
                                     subtitle: Text(trip.description),
                                   ),

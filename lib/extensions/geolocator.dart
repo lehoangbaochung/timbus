@@ -45,6 +45,16 @@ class GeolocatorService {
     }
     return [];
   }
+
+  static double getDistance(LatLng l1, LatLng l2) {
+    final x = degToRadian(l1.latitude - l2.latitude);
+    final y = degToRadian(l1.longitude - l2.longitude);
+    final a = sin(x / 2) * sin(x / 2);
+    final b = sin(y / 2) * sin(y / 2);
+    final c = cos(degToRadian(l1.latitude)) * cos(degToRadian(l2.latitude));
+    final d = 2 * atan2(sqrt(a + c * b), sqrt(1 - a + c * b));
+    return round(6371 * d, decimals: 2);
+  }
 }
 
 extension PositionX on Position {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MenuTile extends StatelessWidget {
+class MenuTile2 extends StatelessWidget {
   final String? title;
   final String? subtitle;
   final IconData? leading;
@@ -8,7 +8,7 @@ class MenuTile extends StatelessWidget {
   final void Function()? onTap;
   final void Function()? onLongPress;
 
-  const MenuTile({
+  const MenuTile2({
     super.key,
     this.title,
     this.subtitle,

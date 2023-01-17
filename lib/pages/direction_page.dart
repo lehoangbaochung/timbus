@@ -1,7 +1,6 @@
-import 'package:bus/app/pages.dart';
 import 'package:flutter/material.dart';
 
-import '/app/localizations.dart';
+import '/app/app_pages.dart';
 import '/exports/entities.dart';
 import '/exports/widgets.dart';
 import '/extensions/geolocator.dart';
@@ -44,7 +43,7 @@ class DirectionPage extends StatelessWidget {
                               autofocus: from == null || to == null,
                               controller: fromTextController,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.localize(67),
+                                hintText: appStorage.localize(67),
                                 enabledBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
                                 suffixIcon: Visibility(
@@ -68,11 +67,8 @@ class DirectionPage extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            tooltip: AppLocalizations.localize(11),
-                            icon: const Icon(
-                              Icons.my_location,
-                              color: Colors.blue,
-                            ),
+                            tooltip: appStorage.localize(11),
+                            icon: const Icon(Icons.my_location),
                             onPressed: () async {
                               final nearestStops = await GeolocatorService.getNearestStops();
                               await showDialog(
@@ -80,15 +76,15 @@ class DirectionPage extends StatelessWidget {
                                 builder: (context) {
                                   return SimpleDialog(
                                     title: Text(
-                                      AppLocalizations.localize(79),
+                                      appStorage.localize(79),
                                     ),
                                     children: nearestStops
                                         .map((stop) {
-                                          return MenuTile(
-                                            leading: Icons.bus_alert,
-                                            trailing: Icons.call_made,
-                                            title: stop.name,
-                                            subtitle: stop.description.isEmpty || stop.name == stop.description ? null : stop.description,
+                                          final isEmptyDescription = stop.description.isEmpty || stop.name == stop.description;
+                                          return ListTile(
+                                            leading: const Icon(Icons.bus_alert),
+                                            title: Text(stop.name),
+                                            subtitle: isEmptyDescription ? null : Text(stop.description),
                                             onTap: () {
                                               Navigator.pop(context);
                                               if (selected) {
@@ -112,7 +108,6 @@ class DirectionPage extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      // to textfield
                       Row(
                         children: [
                           IconButton(
@@ -135,7 +130,7 @@ class DirectionPage extends StatelessWidget {
                               autofocus: from != null,
                               controller: toTextController,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.localize(68),
+                                hintText: appStorage.localize(68),
                                 enabledBorder: InputBorder.none,
                                 disabledBorder: InputBorder.none,
                                 suffixIcon: Visibility(
@@ -184,11 +179,13 @@ class DirectionPage extends StatelessWidget {
                                 itemCount: stops.length,
                                 itemBuilder: (context, index) {
                                   final stop = stops.elementAt(index);
-                                  return MenuTile(
-                                    leading: Icons.bus_alert,
-                                    trailing: Icons.call_made,
-                                    title: stop.name,
-                                    subtitle: stop.description.isEmpty || stop.name == stop.description ? null : stop.description,
+                                  final isEmpty = stop.description.isEmpty || stop.name == stop.description;
+                                  return ListTile(
+                                    leading: const CircleAvatar(
+                                      child: Icon(Icons.bus_alert),
+                                    ),
+                                    title: Text(stop.name),
+                                    subtitle: isEmpty ? null : Text(stop.description),
                                     onTap: () {
                                       if (selected) {
                                         from = stop;
@@ -203,9 +200,7 @@ class DirectionPage extends StatelessWidget {
                                 },
                               );
                             }
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
+                            return centeredLoadingIndicator;
                           },
                         )
                       : FutureBuilder(
@@ -217,9 +212,13 @@ class DirectionPage extends StatelessWidget {
                             if (snapshot.hasData) {
                               final fromRoutes = snapshot.requireData.first;
                               final toRoutes = snapshot.requireData.last;
-                              final routes = snapshot.requireData.expand((entry) => entry.keys).where(
+                              final routes = snapshot.requireData
+                                  .expand((entry) => entry.keys)
+                                  .where(
                                     (route) => fromRoutes.keys.contains(route) && toRoutes.keys.contains(route),
-                                  ).toSet().toList();
+                                  )
+                                  .toSet()
+                                  .toList();
                               return ListView(
                                 children: [
                                   const SizedBox(height: 4),
@@ -228,7 +227,7 @@ class DirectionPage extends StatelessWidget {
                                     initiallyExpanded: true,
                                     leading: const Icon(Icons.directions_bus),
                                     title: Text(
-                                      AppLocalizations.localize(64),
+                                      appStorage.localize(64),
                                     ),
                                     children: fromRoutes.entries.map((entry) {
                                       return ListTile(
@@ -252,7 +251,7 @@ class DirectionPage extends StatelessWidget {
                                     initiallyExpanded: true,
                                     leading: const Icon(Icons.directions_bus),
                                     title: Text(
-                                      AppLocalizations.localize(65),
+                                      appStorage.localize(65),
                                     ),
                                     children: toRoutes.entries.map((e) {
                                       return ListTile(
@@ -276,7 +275,7 @@ class DirectionPage extends StatelessWidget {
                                       initiallyExpanded: true,
                                       leading: const Icon(Icons.directions_bus),
                                       title: Text(
-                                        AppLocalizations.localize(63),
+                                        appStorage.localize(63),
                                       ),
                                       children: routes.map((route) {
                                         return ListTile(
