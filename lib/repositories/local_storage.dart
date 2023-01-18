@@ -1,8 +1,8 @@
 part of 'app_storage.dart';
 
 class _LocalStorage implements _LocalRepository {
+  late Map<String, String> localizations;
   late final SharedPreferences preferences;
-  late final Map<String, String> localizations;
 
   static const themeMode = 'theme_mode';
   static const languageCode = 'language_code';
@@ -51,7 +51,14 @@ class _LocalStorage implements _LocalRepository {
   }
 
   @override
-  Future<bool> setLanguageCode(String code) {
+  Future<bool> setLanguageCode(String code) async {
+    localizations = Map.from(
+      jsonDecode(
+        await rootBundle.loadString(
+          'assets/locales/$code.json',
+        ),
+      ),
+    );
     return preferences.setString(languageCode, code);
   }
 

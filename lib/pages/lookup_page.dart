@@ -102,9 +102,10 @@ class LookupPage extends StatelessWidget {
                             itemBuilder: (context, index) {
                               final stop = stops.elementAt(index);
                               return ListTile(
-                                leading: const CircleAvatar(
-                                  foregroundColor: Colors.blue,
-                                  child: Icon(Icons.bus_alert),
+                                leading: CircleAvatar(
+                                  backgroundColor: Theme.of(context).colorScheme.primary,
+                                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                                  child: const Icon(Icons.bus_alert),
                                 ),
                                 title: Text(stop.name),
                                 subtitle: stop.description.isEmpty || stop.name == stop.description ? null : Text(stop.description),

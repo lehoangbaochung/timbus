@@ -6,7 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../app/app_languages.dart';
+import '/app/app_languages.dart';
 import '/exports/entities.dart';
 import '/firebase_options.dart';
 
@@ -16,8 +16,7 @@ part 'remote_storage.dart';
 final appStorage = _AppStorage();
 
 class _AppStorage with _LocalStorage, _RemoteStorage {
-  late final themeController = StreamController<bool>.broadcast();
-  late final languageController = StreamController<bool>.broadcast();
+  late final stateController = StreamController.broadcast(sync: true);
 
   Future<void> ensureInitialized() async {
     await Firebase.initializeApp(

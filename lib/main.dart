@@ -11,14 +11,13 @@ void main() async {
   await appStorage.ensureInitialized();
   runApp(
     StreamBuilder(
-      initialData: appStorage.getThemeMode(),
-      stream: appStorage.themeController.stream,
+      stream: appStorage.stateController.stream,
       builder: (context, snapshot) {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
           routerConfig: AppPages.routerConfig,
           title: appStorage.localize(0),
-          theme: snapshot.requireData
+          theme: appStorage.getThemeMode()
               ? ThemeData.light().copyWith(
                   colorScheme: ColorScheme.fromSwatch(
                     primarySwatch: Colors.blue,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 enum AppLanguages {
-  en('English'),
-  vi('Tiếng Việt');
+  vi('Tiếng Việt'),
+  en('English');
 
   const AppLanguages(this.localeName);
 
