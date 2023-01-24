@@ -12,7 +12,7 @@ extension BuildContextX on BuildContext {
         return true;
       }
     } on SocketException catch (e) {
-      showSnackBar(e.message); 
+      showSnackBar(e.message);
     }
     return false;
   }
@@ -38,4 +38,7 @@ extension BuildContextX on BuildContext {
     );
     showSnackBar(message);
   }
+
+  Color get primaryColor => Theme.of(this).colorScheme.primary;
+  Color get secondaryColor => Theme.of(this).colorScheme.onPrimary;
 }

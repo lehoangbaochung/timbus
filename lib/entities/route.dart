@@ -9,7 +9,6 @@ enum TripOfRoute {
   outbound,
 }
 
-// ignore: must_be_immutable
 class Route extends Comparable {
   static final Map<String, Route> _shelf = {};
 
@@ -48,13 +47,13 @@ class Route extends Comparable {
   String getName([TripOfRoute tripOfRoute = TripOfRoute.outbound]) {
     switch (tripOfRoute) {
       case TripOfRoute.outbound:
-        return '${outbound.name} - ${inbound.name}';
+        return '${outbound.name} $combine ${inbound.name}';
       case TripOfRoute.inbound:
-        return '${inbound.name} - ${outbound.name}';
+        return '${inbound.name} $combine ${outbound.name}';
     }
   }
 
-  /// Returns the turn of this [Route].
+  /// Returns the trip of this [Route].
   Trip getTrip(TripOfRoute tripOfRoute) {
     switch (tripOfRoute) {
       case TripOfRoute.outbound:

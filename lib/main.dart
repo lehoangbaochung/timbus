@@ -11,7 +11,7 @@ void main() async {
   await appStorage.ensureInitialized();
   runApp(
     StreamBuilder(
-      stream: appStorage.stateController.stream,
+      stream: appStorage.lifecycle,
       builder: (context, snapshot) {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,

@@ -1,4 +1,3 @@
-import 'package:bus/app/app_theme.dart';
 import 'package:bus/extensions/context.dart';
 import 'package:bus/repositories/app_storage.dart';
 import 'package:flutter/material.dart';
@@ -100,8 +99,8 @@ class StopPage extends StatelessWidget {
                                       route.getName(routes[route]!),
                                     ),
                                     leading: CircleAvatar(
-                                      backgroundColor: appTheme.primaryColor,
-                                      foregroundColor: appTheme.onSecondaryColor,
+                                      backgroundColor: context.primaryColor,
+                                      foregroundColor: context.secondaryColor,
                                       child: Text(route.id),
                                     ),
                                     onTap: () => AppPages.push(context, AppPages.route.path, route),
@@ -118,6 +117,7 @@ class StopPage extends StatelessWidget {
             // Stop name
             ListTile(
               minLeadingWidth: 0,
+              textColor: context.secondaryColor,
               tileColor: Colors.orangeAccent,
               leading: const Icon(
                 Icons.bus_alert,

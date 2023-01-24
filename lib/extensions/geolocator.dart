@@ -29,21 +29,21 @@ class GeolocatorService {
       });
   }
 
-  static Future<Iterable<Route>> direct(Stop from, Stop to) async {
-    final routes = await appStorage.getAllRoutes();
+  static Future<void> direct(Stop from, Stop to) async {
+    final result = <Route>[];
+    final routes = (await from.getRoutes()).keys;
+    final allRoutes = await appStorage.getAllRoutes();
     for (final route in routes) {
       final inboundStops = await route.getTrip(TripOfRoute.inbound).stops;
       final outboundStops = await route.getTrip(TripOfRoute.outbound).stops;
-      if ((inboundStops.contains(from) && inboundStops.contains(to)) ||
-          (outboundStops.contains(from) && outboundStops.contains(to)) ||
-          (inboundStops.contains(from) && outboundStops.contains(to)) ||
-          (outboundStops.contains(from) && inboundStops.contains(to))) {
-        return [route];
+      final stops = inboundStops.toList()..addAll(outboundStops);
+      if (stops.contains(to)) {
+        result.add(route);
+        break;
       } else {
-        //final routes = <Route>[];
+        while (routes.isNotEmpty) {}
       }
     }
-    return [];
   }
 
   static double getDistance(LatLng l1, LatLng l2) {

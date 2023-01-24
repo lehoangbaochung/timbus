@@ -134,7 +134,7 @@ class FavoritePage extends StatelessWidget {
                                 final stop = stops.elementAt(index);
                                 return ListTile(
                                   title: Text(stop.name),
-                                  subtitle: Text(stop.description),
+                                  subtitle: stop.description.isEmpty || stop.name == stop.description ? null : Text(stop.description),
                                   leading: const CircleAvatar(
                                     foregroundColor: Colors.blue,
                                     child: Icon(Icons.bus_alert),

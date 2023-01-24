@@ -12,6 +12,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mapController = MapController();
+    final timeController = Stream.periodic(
+      const Duration(minutes: 1),
+      (_) => DateTime.now(),
+    ).asBroadcastStream();
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
@@ -22,24 +26,63 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.star_border),
-            tooltip: appStorage.localize(2),
             onPressed: () => AppPages.push(context, AppPages.favorite.path),
+            tooltip: appStorage.localize(2),
           ),
         ],
       ),
       drawer: Drawer(
         child: ListView(
           children: [
-            const DrawerHeader(
+            DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
-                image: DecorationImage(
-                  image: AssetImage(
-                    'assets/images/favicon.png',
-                  ),
-                ),
               ),
-              child: SizedBox.shrink(),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // FutureBuilder(
+                  //   future: appStorage.getAllPlaces(),
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.hasData) {
+                  //       final places = snapshot.requireData.toList()..shuffle();
+                  //       return FittedBox(
+                  //         fit: BoxFit.fill,
+                  //         child: Image.network(
+                  //           places.first.images.first,
+                  //           fit: BoxFit.fill,
+                  //         ),
+                  //       );
+                  //     }
+                  //     return const SizedBox.shrink();
+                  //   },
+                  // ),
+                  // Positioned(
+                  //   right: 8,
+                  //   bottom: 8,
+                  //   child: StreamBuilder(
+                  //     initialData: DateTime.now(),
+                  //     stream: timeController,
+                  //     builder: (context, snapshot) {
+                  //       final dateTime = snapshot.requireData;
+                  //       return Column(
+                  //         mainAxisSize: MainAxisSize.min,
+                  //         crossAxisAlignment: CrossAxisAlignment.end,
+                  //         children: [
+                  //           Text(
+                  //             '${dateTime.hour}:${dateTime.hour}',
+                  //             style: Theme.of(context).textTheme.titleLarge,
+                  //           ),
+                  //           Text(
+                  //             '${dateTime.day}/${dateTime.month}/${dateTime.year}',
+                  //           ),
+                  //         ],
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
+                ],
+              ),
             ),
             ListTile(
               selected: true,

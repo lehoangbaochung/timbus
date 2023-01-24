@@ -1,8 +1,8 @@
 part of 'app_storage.dart';
 
 class _RemoteStorage implements _RemoteRepository {
-  late final shelf = <String, dynamic>{};
-  late final database = FirebaseFirestore.instance;
+  late final _shelf = <String, dynamic>{};
+  late final _database = FirebaseFirestore.instance;
 
   static const article = 'article';
   static const agency = 'agency';
@@ -12,8 +12,8 @@ class _RemoteStorage implements _RemoteRepository {
 
   @override
   Future<Iterable<Agency>> getAllAgencies() async {
-    if (shelf.containsKey(agency)) return shelf[agency];
-    final query = await database
+    if (_shelf.containsKey(agency)) return _shelf[agency];
+    final query = await _database
         .collection(agency)
         .withConverter(
           toFirestore: (obj, _) => obj.toJson(),
@@ -23,13 +23,13 @@ class _RemoteStorage implements _RemoteRepository {
           ),
         )
         .get();
-    return shelf[agency] = query.docs.map((doc) => doc.data()).sorted;
+    return _shelf[agency] = query.docs.map((doc) => doc.data()).sorted;
   }
 
   @override
   Future<Iterable<Article>> getAllArticles() async {
-    if (shelf.containsKey(article)) return shelf[article];
-    final query = await database
+    if (_shelf.containsKey(article)) return _shelf[article];
+    final query = await _database
         .collection(article)
         .withConverter(
           toFirestore: (obj, _) => obj.toJson(),
@@ -39,13 +39,13 @@ class _RemoteStorage implements _RemoteRepository {
           ),
         )
         .get();
-    return shelf[article] = query.docs.map((doc) => doc.data()).sorted.reversed;
+    return _shelf[article] = query.docs.map((doc) => doc.data()).sorted.reversed;
   }
 
   @override
   Future<Iterable<Place>> getAllPlaces() async {
-    if (shelf.containsKey(place)) return shelf[place];
-    final query = await database
+    if (_shelf.containsKey(place)) return _shelf[place];
+    final query = await _database
         .collection(place)
         .withConverter(
           toFirestore: (obj, _) => obj.toJson(),
@@ -55,13 +55,13 @@ class _RemoteStorage implements _RemoteRepository {
           ),
         )
         .get();
-    return shelf[place] = query.docs.map((doc) => doc.data()).sorted;
+    return _shelf[place] = query.docs.map((doc) => doc.data()).sorted;
   }
 
   @override
   Future<Iterable<Route>> getAllRoutes() async {
-    if (shelf.containsKey(route)) return shelf[route];
-    final query = await database
+    if (_shelf.containsKey(route)) return _shelf[route];
+    final query = await _database
         .collection(route)
         .withConverter(
           toFirestore: (obj, _) => obj.toJson(),
@@ -71,13 +71,13 @@ class _RemoteStorage implements _RemoteRepository {
           ),
         )
         .get();
-    return shelf[route] = query.docs.map((doc) => doc.data());
+    return _shelf[route] = query.docs.map((doc) => doc.data());
   }
 
   @override
   Future<Iterable<Stop>> getAllStops() async {
-    if (shelf.containsKey(stop)) return shelf[stop];
-    final query = await database
+    if (_shelf.containsKey(stop)) return _shelf[stop];
+    final query = await _database
         .collection(stop)
         .withConverter(
           toFirestore: (obj, _) => obj.toJson(),
@@ -87,6 +87,6 @@ class _RemoteStorage implements _RemoteRepository {
           ),
         )
         .get();
-    return shelf[stop] = query.docs.map((doc) => doc.data()).sorted;
+    return _shelf[stop] = query.docs.map((doc) => doc.data()).sorted;
   }
 }

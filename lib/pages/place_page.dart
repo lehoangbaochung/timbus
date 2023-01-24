@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../app/app_pages.dart';
+import '/app/app_pages.dart';
 import '/exports/entities.dart';
 import '/exports/widgets.dart';
 import '/extensions/geolocator.dart';
@@ -61,10 +62,18 @@ class PlaceMasterPage extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final place = places.elementAt(index);
                             return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  place.images.first,
-                                ),
+                              leading: CachedNetworkImage(
+                                imageUrl: place.images.first,
+                                placeholder: (_, __) {
+                                  return const CircleAvatar(
+                                    child: Icon(Icons.place),
+                                  );
+                                },
+                                imageBuilder: (context, imageProvider) {
+                                  return CircleAvatar(
+                                    backgroundImage: imageProvider,
+                                  );
+                                },
                               ),
                               title: Text(
                                 place.name,
@@ -100,10 +109,18 @@ class PlaceMasterPage extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final place = places.elementAt(index);
                             return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  place.images.first,
-                                ),
+                              leading: CachedNetworkImage(
+                                imageUrl: place.images.first,
+                                placeholder: (_, __) {
+                                  return const CircleAvatar(
+                                    child: Icon(Icons.place),
+                                  );
+                                },
+                                imageBuilder: (_, imageProvider) {
+                                  return CircleAvatar(
+                                    backgroundImage: imageProvider,
+                                  );
+                                },
                               ),
                               title: Text(
                                 place.name,
@@ -173,9 +190,15 @@ class PlaceDetailPage extends StatelessWidget {
                       controller: imageController,
                       itemCount: images.length,
                       itemBuilder: (context, index) {
-                        return Image.network(
-                          images.elementAt(index),
+                        return CachedNetworkImage(
                           fit: BoxFit.cover,
+                          imageUrl: images.elementAt(index),
+                          placeholder: (_, __) => centeredLoadingIndicator,
+                          errorWidget: (_, __, ___) {
+                            return const Center(
+                              child: Icon(Icons.place),
+                            );
+                          },
                         );
                       },
                       onPageChanged: (index) => setState(() => imageIndex = index),

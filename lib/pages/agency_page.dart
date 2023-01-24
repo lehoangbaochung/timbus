@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,7 +20,7 @@ class AgencyPage extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           body: NestedScrollView(
-            headerSliverBuilder: (context, innerBoxIsScrolled) {
+            headerSliverBuilder: (context, _) {
               return [
                 SliverAppBar(
                   expandedHeight: MediaQuery.of(context).size.height / 3,
@@ -33,9 +34,9 @@ class AgencyPage extends StatelessWidget {
                               controller: imageController,
                               itemCount: images.length,
                               itemBuilder: (context, index) {
-                                return Image.network(
-                                  images.elementAt(index),
+                                return CachedNetworkImage(
                                   fit: BoxFit.cover,
+                                  imageUrl: images.elementAt(index),
                                 );
                               },
                               onPageChanged: (index) => setState(() => imageIndex = index),

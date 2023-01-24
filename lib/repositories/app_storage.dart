@@ -16,14 +16,18 @@ part 'remote_storage.dart';
 final appStorage = _AppStorage();
 
 class _AppStorage with _LocalStorage, _RemoteStorage {
-  late final stateController = StreamController.broadcast(sync: true);
+  late final _stateController = StreamController<void>.broadcast();
+
+  Stream<void> get lifecycle => _stateController.stream;
+
+  void refresh() => _stateController.add(null);
 
   Future<void> ensureInitialized() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    preferences = await SharedPreferences.getInstance();
-    localizations = Map.from(
+    _preferences = await SharedPreferences.getInstance();
+    _localizations = Map.from(
       jsonDecode(
         await rootBundle.loadString(
           'assets/locales/${appStorage.getLanguageCode()}.json',

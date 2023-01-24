@@ -1,11 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '/app/app_pages.dart';
 import '/entities/article.dart';
-import '../app/app_pages.dart';
 import '/exports/widgets.dart';
-import '/extensions/context.dart';
 import '/repositories/app_storage.dart';
 
 class ArticleMasterPage extends StatelessWidget {
@@ -63,10 +62,18 @@ class ArticleMasterPage extends StatelessWidget {
                                 article.content,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  article.thumbnail,
-                                ),
+                              leading:  CachedNetworkImage(
+                                imageUrl: article.thumbnail,
+                                placeholder: (_, __) {
+                                  return const CircleAvatar(
+                                    child: Icon(Icons.newspaper),
+                                  );
+                                },
+                                imageBuilder: (_, imageProvider) {
+                                  return CircleAvatar(
+                                    backgroundImage: imageProvider,
+                                  );
+                                },
                               ),
                               onTap: () => AppPages.push(context, AppPages.article.path + AppPages.detail.path, article),
                             );
@@ -102,10 +109,18 @@ class ArticleMasterPage extends StatelessWidget {
                                 article.content,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                  article.thumbnail,
-                                ),
+                              leading: CachedNetworkImage(
+                                imageUrl: article.thumbnail,
+                                placeholder: (_, __) {
+                                  return const CircleAvatar(
+                                    child: Icon(Icons.newspaper),
+                                  );
+                                },
+                                imageBuilder: (_, imageProvider) {
+                                  return CircleAvatar(
+                                    backgroundImage: imageProvider,
+                                  );
+                                },
                               ),
                               onTap: () => AppPages.push(context, AppPages.article.path + AppPages.detail.path, article),
                             );
@@ -137,10 +152,15 @@ class ArticleDetailPage extends StatelessWidget {
               pinned: true,
               expandedHeight: MediaQuery.of(context).size.height / 3,
               flexibleSpace: FlexibleSpaceBar(
-                background: Image.network(
-                  article.thumbnail,
+                background: CachedNetworkImage(
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                  imageUrl: article.thumbnail,
+                  placeholder: (_, __) => centeredLoadingIndicator,
+                  errorWidget: (_, __, ___) {
+                    return const Center(
+                      child: Icon(Icons.newspaper),
+                    );
+                  },
                 ),
               ),
             ),
@@ -190,16 +210,6 @@ class ArticleDetailPage extends StatelessWidget {
               onTap: () async {
                 await launchUrl(
                   Uri.parse(article.source),
-                );
-              },
-              onLongPress: () async {
-                context.showSnackBar(
-                  appStorage.localize(66),
-                );
-                await Clipboard.setData(
-                  ClipboardData(
-                    text: article.source,
-                  ),
                 );
               },
             ),

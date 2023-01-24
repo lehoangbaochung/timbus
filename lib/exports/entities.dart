@@ -6,6 +6,7 @@ export '/entities/stop.dart';
 export '/entities/trip.dart';
 
 const empty = '';
+const combine = '-';
 const separator = ',';
 
 /// Interface used by types that have an intrinsic ordering.
@@ -25,7 +26,7 @@ abstract class Comparable {
 }
 
 extension ComparableX<T extends Comparable> on Iterable<T> {
-  /// A [List] of the [T] objects in this [Iterable] in sort order by the id.
+  /// A [List] of the [T] objects in this [Iterable] in sort order by the `id`.
   List<T> get sorted {
     return toList()
       ..sort(

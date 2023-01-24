@@ -43,7 +43,7 @@ class SettingsPage extends StatelessWidget {
                           value: language,
                           groupValue: appLanguage,
                           onChanged: (value) async {
-                            appStorage.stateController.add(value);
+                            appStorage.refresh();
                             await appStorage.setLanguageCode(value!.name);
                           },
                           title: Text(language.localeName),
@@ -77,7 +77,7 @@ class SettingsPage extends StatelessWidget {
                         value: true,
                         groupValue: appTheme,
                         onChanged: (value) async {
-                          appStorage.stateController.add(value);
+                          appStorage.refresh();
                           await appStorage.setThemeMode(value!);
                         },
                         title: Text(
@@ -88,7 +88,7 @@ class SettingsPage extends StatelessWidget {
                         value: false,
                         groupValue: appTheme,
                         onChanged: (value) async {
-                          appStorage.stateController.add(value);
+                          appStorage.refresh();
                           await appStorage.setThemeMode(value!);
                         },
                         title: Text(
