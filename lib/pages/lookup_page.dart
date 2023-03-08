@@ -1,3 +1,4 @@
+import 'package:bus/extensions/appearance.dart';
 import 'package:bus/extensions/context.dart';
 import 'package:flutter/material.dart';
 
@@ -69,8 +70,8 @@ class LookupPage extends StatelessWidget {
                               final route = routes.elementAt(index);
                               return ListTile(
                                 leading: CircleAvatar(
-                                  backgroundColor: context.primaryColor,
-                                  foregroundColor: context.secondaryColor,
+                                  backgroundColor: appStorage.paint(0),
+                                  foregroundColor: appStorage.paint(1),
                                   child: Text(
                                     route.id,
                                     textAlign: TextAlign.center,
@@ -104,8 +105,8 @@ class LookupPage extends StatelessWidget {
                               final stop = stops.elementAt(index);    
                               return ListTile(
                                 leading: CircleAvatar(
-                                  backgroundColor: context.primaryColor,
-                                  foregroundColor: context.secondaryColor,
+                                  backgroundColor: appStorage.paint(0),
+                                  foregroundColor: appStorage.paint(1),
                                   child: const Icon(Icons.bus_alert),
                                 ),
                                 title: Text(stop.name),

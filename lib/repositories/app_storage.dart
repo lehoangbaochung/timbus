@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:bus/extensions/appearance.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart' hide Route;
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,11 +24,12 @@ class _AppStorage with _LocalStorage, _RemoteStorage {
 
   void refresh() => _stateController.add(null);
 
-  Future<void> ensureInitialized() async {
+  Future<bool> ensureInitialized() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
     _preferences = await SharedPreferences.getInstance();
+    _colors = appStorage.getThemeMode().getPlatformBrightness().toSwatch();
     _localizations = Map.from(
       jsonDecode(
         await rootBundle.loadString(
@@ -34,10 +37,14 @@ class _AppStorage with _LocalStorage, _RemoteStorage {
         ),
       ),
     );
+    return Future.value(true);
   }
 }
 
 abstract class _LocalRepository {
+  /// Returns the current brightness mode of the host platform.
+  Color paint(int id);
+
   /// Returns a localized string with specified [id].
   String localize(int id);
 
@@ -49,7 +56,7 @@ abstract class _LocalRepository {
 
   String getLanguageCode();
 
-  bool getThemeMode();
+  ThemeMode getThemeMode();
 
   Future<bool> setFavoriteRoutes(Iterable<Route> routes);
 
@@ -57,7 +64,7 @@ abstract class _LocalRepository {
 
   Future<bool> setLanguageCode(String code);
 
-  Future<bool> setThemeMode(bool mode);
+  Future<bool> setThemeMode(ThemeMode mode);
 }
 
 abstract class _RemoteRepository {

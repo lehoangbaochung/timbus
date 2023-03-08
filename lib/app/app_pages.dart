@@ -72,7 +72,10 @@ enum AppPages {
           path: AppPages.direction.path,
           builder: (_, state) {
             final params = state.extra as Map<String, dynamic>?;
-            return DirectionPage(from: params?['from'] as Stop?, to: params?['to'] as Stop?);
+            return DirectionPage(
+              from: params?['from'] as Stop?,
+              to: params?['to'] as Stop?,
+            );
           },
         ),
         GoRoute(

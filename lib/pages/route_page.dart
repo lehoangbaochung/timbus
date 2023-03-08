@@ -1,4 +1,5 @@
 import 'package:bus/app/app_pages.dart';
+import 'package:bus/extensions/appearance.dart';
 import 'package:bus/extensions/context.dart';
 import 'package:bus/repositories/app_storage.dart';
 import 'package:flutter/material.dart' hide Route;
@@ -8,7 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import '/exports/entities.dart';
 import '/exports/widgets.dart';
 import '/extensions/geolocator.dart';
-import '../extensions/polyline.dart';
+import '/extensions/polyline.dart';
 
 class RoutePage extends StatefulWidget {
   final Route route;
@@ -106,7 +107,7 @@ class _RoutePageState extends State<RoutePage> {
                             polylines: [
                               Polyline(
                                 strokeWidth: 3,
-                                color: Colors.blue,
+                                color: appStorage.paint(0),
                                 points: decodePolyline(
                                   encodePolyline(
                                     stops.map((stop) => stop.position),
@@ -128,8 +129,8 @@ class _RoutePageState extends State<RoutePage> {
                                       radius: 40,
                                       borderStrokeWidth: 40,
                                       useRadiusInMeter: true,
-                                      color: Colors.blue,
-                                      borderColor: Colors.blue.withOpacity(0.4),
+                                      color: appStorage.paint(0),
+                                      borderColor: appStorage.paint(0).withOpacity(0.4),
                                     ),
                                   ],
                                 );
@@ -148,10 +149,10 @@ class _RoutePageState extends State<RoutePage> {
                                 builder: (context) {
                                   return IconButton(
                                     icon: CircleAvatar(
-                                      foregroundColor: Colors.blue,
+                                      foregroundColor: appStorage.paint(0),
                                       child: Icon(
                                         Icons.bus_alert,
-                                        color: currentStop == index ? Colors.orangeAccent : Colors.blue,
+                                        color: currentStop == index ? appStorage.paint(1) : appStorage.paint(0),
                                       ),
                                     ),
                                     onPressed: () => AppPages.push(context, AppPages.stop.path, stop),
@@ -213,7 +214,7 @@ class _RoutePageState extends State<RoutePage> {
                         ),
                         trailing: IconButton(
                           tooltip: appStorage.localize(74),
-                          color: Colors.white,
+                          color: appStorage.paint(1),
                           icon: const Icon(Icons.fullscreen_exit),
                           onPressed: () => fullscreenMode.value = false,
                         ),
@@ -256,7 +257,6 @@ class _RoutePageState extends State<RoutePage> {
                                 icon: const Icon(Icons.fullscreen),
                                 onPressed: () => fullscreenMode.value = true,
                                 tooltip: fullscreenMode.value ? appStorage.localize(74) : appStorage.localize(75),
-
                               ),
                             ],
                             bottom: ColoredTabBar(
@@ -280,7 +280,7 @@ class _RoutePageState extends State<RoutePage> {
                           ),
                           body: TabBarView(
                             children: [
-                              // Schedule
+                              // schedule
                               StatefulBuilder(
                                 builder: (context, setState) {
                                   final schedule = trip.schedule[isWeekday ? DayOfWeek.weekday : DayOfWeek.weekend] ?? [];
@@ -335,7 +335,7 @@ class _RoutePageState extends State<RoutePage> {
                                   );
                                 },
                               ),
-                              // Stops
+                              // stops
                               Stepper(
                                 key: UniqueKey(),
                                 currentStep: currentStop,
@@ -365,9 +365,9 @@ class _RoutePageState extends State<RoutePage> {
                                       if (snapshot.hasData) {
                                         final agency = snapshot.requireData;
                                         return ListTile(
-                                          leading: const CircleAvatar(
-                                            foregroundColor: Colors.blue,
-                                            child: Icon(Icons.factory),
+                                          leading: CircleAvatar(
+                                            foregroundColor: appStorage.paint(0),
+                                            child: const Icon(Icons.factory),
                                           ),
                                           title: Text(
                                             appStorage.localize(20),
@@ -382,9 +382,9 @@ class _RoutePageState extends State<RoutePage> {
                                   ),
                                   // timeline
                                   ListTile(
-                                    leading: const CircleAvatar(
-                                      foregroundColor: Colors.blue,
-                                      child: Icon(Icons.timeline),
+                                    leading: CircleAvatar(
+                                      foregroundColor: appStorage.paint(0),
+                                      child: const Icon(Icons.timeline),
                                     ),
                                     title: Text(
                                       appStorage.localize(21),
@@ -395,9 +395,9 @@ class _RoutePageState extends State<RoutePage> {
                                   ),
                                   // fare
                                   ListTile(
-                                    leading: const CircleAvatar(
-                                      foregroundColor: Colors.blue,
-                                      child: Icon(Icons.attach_money),
+                                    leading: CircleAvatar(
+                                      foregroundColor: appStorage.paint(0),
+                                      child: const Icon(Icons.attach_money),
                                     ),
                                     title: Text(
                                       appStorage.localize(22),
@@ -406,9 +406,9 @@ class _RoutePageState extends State<RoutePage> {
                                   ),
                                   // distance
                                   ListTile(
-                                    leading: const CircleAvatar(
-                                      foregroundColor: Colors.blue,
-                                      child: Icon(Icons.linear_scale_rounded),
+                                    leading: CircleAvatar(
+                                      foregroundColor: appStorage.paint(0),
+                                      child: const Icon(Icons.linear_scale_rounded),
                                     ),
                                     title: Text(
                                       appStorage.localize(23),
@@ -417,9 +417,9 @@ class _RoutePageState extends State<RoutePage> {
                                   ),
                                   // timelapse
                                   ListTile(
-                                    leading: const CircleAvatar(
-                                      foregroundColor: Colors.blue,
-                                      child: Icon(Icons.timelapse),
+                                    leading: CircleAvatar(
+                                      foregroundColor: appStorage.paint(0),
+                                      child: const Icon(Icons.timelapse),
                                     ),
                                     title: Text(
                                       appStorage.localize(24),
@@ -430,14 +430,16 @@ class _RoutePageState extends State<RoutePage> {
                                   ),
                                   // description
                                   ListTile(
-                                    leading: const CircleAvatar(
-                                      foregroundColor: Colors.blue,
-                                      child: Icon(Icons.route),
+                                    leading: CircleAvatar(
+                                      foregroundColor: appStorage.paint(0),
+                                      child: const Icon(Icons.route),
                                     ),
                                     title: Text(
                                       appStorage.localize(25),
                                     ),
-                                    subtitle: Text(trip.description),
+                                    subtitle: Text(
+                                      trip.description,
+                                    ),
                                   ),
                                 ],
                               ),

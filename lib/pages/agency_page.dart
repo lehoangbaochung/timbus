@@ -1,3 +1,5 @@
+import 'package:bus/app/app_colors.dart';
+import 'package:bus/extensions/appearance.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -56,7 +58,7 @@ class AgencyPage extends StatelessWidget {
                                       child: Icon(
                                         size: 12,
                                         imageIndex == index ? Icons.circle : Icons.circle_outlined,
-                                        color: imageIndex == index ? Colors.blue : Colors.white,
+                                        color: imageIndex == index ? appStorage.paint(0) : appStorage.paint(1),
                                       ),
                                     ),
                                     onTap: () {
@@ -116,8 +118,9 @@ class AgencyPage extends StatelessWidget {
                 ListView(
                   children: [
                     ListTile(
-                      leading: const CircleAvatar(
-                        child: Icon(Icons.call),
+                      leading: CircleAvatar(
+                        foregroundColor: appStorage.paint(0),
+                        child: const Icon(Icons.call),
                       ),
                       trailing: const SizedBox(
                         height: double.infinity,
@@ -134,8 +137,9 @@ class AgencyPage extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: const CircleAvatar(
-                        child: Icon(Icons.fax),
+                      leading: CircleAvatar(
+                        foregroundColor: appStorage.paint(0),
+                        child: const Icon(Icons.fax),
                       ),
                       trailing: const SizedBox(
                         height: double.infinity,
@@ -152,8 +156,9 @@ class AgencyPage extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: const CircleAvatar(
-                        child: Icon(Icons.email),
+                      leading: CircleAvatar(
+                        foregroundColor: appStorage.paint(0),
+                        child: const Icon(Icons.email),
                       ),
                       trailing: const SizedBox(
                         height: double.infinity,
@@ -170,10 +175,11 @@ class AgencyPage extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: const SizedBox(
+                      leading: SizedBox(
                         height: double.infinity,
                         child: CircleAvatar(
-                          child: Icon(Icons.map),
+                          foregroundColor: appStorage.paint(0),
+                          child: const Icon(Icons.map),
                         ),
                       ),
                       trailing: const SizedBox(
@@ -194,10 +200,11 @@ class AgencyPage extends StatelessWidget {
                     ),
                     ListTile(
                       isThreeLine: true,
-                      leading: const SizedBox(
+                      leading: SizedBox(
                         height: double.infinity,
                         child: CircleAvatar(
-                          child: Icon(Icons.web),
+                          foregroundColor: appStorage.paint(0),
+                          child: const Icon(Icons.web),
                         ),
                       ),
                       trailing: const SizedBox(

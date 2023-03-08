@@ -1,3 +1,5 @@
+import 'dart:math';
+
 export '/entities/article.dart';
 export '/entities/agency.dart';
 export '/entities/place.dart';
@@ -26,13 +28,19 @@ abstract class Comparable {
 }
 
 extension ComparableX<T extends Comparable> on Iterable<T> {
-  /// A [List] of the [T] objects in this [Iterable] in sort order by the `id`.
-  List<T> get sorted {
+  static final _random = Random();
+
+  Iterable<T> get shuffled => toList()..shuffle(_random);
+
+  T get random => _random.nextBool() ? shuffled.first : shuffled.last;
+
+  /// An [Iterable] of the [T] objects in sort order by the `id`.
+  Iterable<T> get sorted {
     return toList()
       ..sort(
         (a, b) {
-          final aId = int.tryParse(a.id) ?? 0;
-          final bId = int.tryParse(b.id) ?? 0;
+          final aId = int.tryParse(a.id) ?? int.tryParse(a.id.substring(0, a.id.length - 1)) ?? 0;
+          final bId = int.tryParse(b.id) ?? int.tryParse(b.id.substring(0, b.id.length - 1)) ?? 0;
           return aId.compareTo(bId);
         },
       );

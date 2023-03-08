@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-import 'app/app_pages.dart';
-import 'repositories/app_storage.dart';
+import '/app/app_pages.dart';
+import '/extensions/appearance.dart';
+import '/repositories/app_storage.dart';
 
 void main() async {
   FlutterNativeSplash.preserve(
@@ -17,19 +18,7 @@ void main() async {
           debugShowCheckedModeBanner: false,
           routerConfig: AppPages.routerConfig,
           title: appStorage.localize(0),
-          theme: appStorage.getThemeMode()
-              ? ThemeData.light().copyWith(
-                  colorScheme: ColorScheme.fromSwatch(
-                    primarySwatch: Colors.blue,
-                    brightness: Brightness.light,
-                  ),
-                )
-              : ThemeData.dark().copyWith(
-                  colorScheme: ColorScheme.fromSwatch(
-                    primarySwatch: Colors.teal,
-                    brightness: Brightness.dark,
-                  ),
-                ),
+          theme: appStorage.getThemeMode().getThemeData(),
         );
       },
     ),

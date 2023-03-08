@@ -32,7 +32,6 @@ class GeolocatorService {
   static Future<void> direct(Stop from, Stop to) async {
     final result = <Route>[];
     final routes = (await from.getRoutes()).keys;
-    final allRoutes = await appStorage.getAllRoutes();
     for (final route in routes) {
       final inboundStops = await route.getTrip(TripOfRoute.inbound).stops;
       final outboundStops = await route.getTrip(TripOfRoute.outbound).stops;
@@ -57,6 +56,13 @@ class GeolocatorService {
   }
 }
 
-extension PositionX on Position {
+extension PositionExtension on Position {
   LatLng toLatLng() => LatLng(latitude, longitude);
+
+  static Future<Position> getCurrentPosition() async {
+    await Geolocator.requestPermission();
+    final currentPosition = await Geolocator.getCurrentPosition();
+    final lastKnownPosition = await Geolocator.getLastKnownPosition();
+    return lastKnownPosition ?? currentPosition;
+  }
 }

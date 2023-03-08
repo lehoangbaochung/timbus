@@ -1,3 +1,5 @@
+
+import 'package:bus/extensions/appearance.dart';
 import 'package:flutter/material.dart';
 
 import '/app/app_languages.dart';
@@ -8,7 +10,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = appStorage.getThemeMode();
+    final themeMode = appStorage.getThemeMode();
     final appLanguage = AppLanguages.values.byName(
       appStorage.getLanguageCode(),
     );
@@ -61,7 +63,7 @@ class SettingsPage extends StatelessWidget {
               appStorage.localize(62),
             ),
             subtitle: Text(
-              appTheme ? appStorage.localize(80) : appStorage.localize(81),
+              themeMode.getLocaleName(),
             ),
             trailing: const Icon(Icons.arrow_right),
             onTap: () async {
@@ -72,30 +74,19 @@ class SettingsPage extends StatelessWidget {
                     title: Text(
                       appStorage.localize(62),
                     ),
-                    children: [
-                      RadioListTile(
-                        value: true,
-                        groupValue: appTheme,
-                        onChanged: (value) async {
+                    children: ThemeMode.values.map((mode) {
+                      return RadioListTile(
+                        value: mode,
+                        groupValue: themeMode,
+                        onChanged: (_) async {
+                          await appStorage.setThemeMode(mode);
                           appStorage.refresh();
-                          await appStorage.setThemeMode(value!);
                         },
                         title: Text(
-                          appStorage.localize(80),
+                          mode.getLocaleName(),
                         ),
-                      ),
-                      RadioListTile(
-                        value: false,
-                        groupValue: appTheme,
-                        onChanged: (value) async {
-                          appStorage.refresh();
-                          await appStorage.setThemeMode(value!);
-                        },
-                        title: Text(
-                          appStorage.localize(81),
-                        ),
-                      ),
-                    ],
+                      );
+                    }).toList(),
                   );
                 },
               );

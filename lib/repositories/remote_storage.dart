@@ -39,7 +39,7 @@ class _RemoteStorage implements _RemoteRepository {
           ),
         )
         .get();
-    return _shelf[article] = query.docs.map((doc) => doc.data()).sorted.reversed;
+    return _shelf[article] = query.docs.map((doc) => doc.data()).sorted.toList().reversed;
   }
 
   @override
@@ -71,7 +71,7 @@ class _RemoteStorage implements _RemoteRepository {
           ),
         )
         .get();
-    return _shelf[route] = query.docs.map((doc) => doc.data());
+    return _shelf[route] = query.docs.map((doc) => doc.data()).sorted;
   }
 
   @override

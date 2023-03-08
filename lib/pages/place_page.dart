@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
 
 import '/app/app_pages.dart';
 import '/exports/entities.dart';
 import '/exports/widgets.dart';
-import '/extensions/geolocator.dart';
 import '/repositories/app_storage.dart';
 
 class PlaceMasterPage extends StatelessWidget {
@@ -49,7 +47,7 @@ class PlaceMasterPage extends StatelessWidget {
               future: appStorage.getAllPlaces(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  final places = snapshot.requireData.toList()..shuffle();
+                  final places = snapshot.requireData.shuffled;
                   return places.isEmpty
                       ? Center(
                           child: Text(
@@ -63,7 +61,7 @@ class PlaceMasterPage extends StatelessWidget {
                             final place = places.elementAt(index);
                             return ListTile(
                               leading: CachedNetworkImage(
-                                imageUrl: place.images.first,
+                                imageUrl: place.thumbnail,
                                 placeholder: (_, __) {
                                   return const CircleAvatar(
                                     child: Icon(Icons.place),
@@ -91,12 +89,12 @@ class PlaceMasterPage extends StatelessWidget {
                 return centeredLoadingIndicator;
               },
             ),
-            // Stops
+            // Favorites
             FutureBuilder(
               future: appStorage.getAllPlaces(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  final places = snapshot.requireData;
+                  final places = <Place>[];
                   return places.isEmpty
                       ? Center(
                           child: Text(
@@ -110,7 +108,7 @@ class PlaceMasterPage extends StatelessWidget {
                             final place = places.elementAt(index);
                             return ListTile(
                               leading: CachedNetworkImage(
-                                imageUrl: place.images.first,
+                                imageUrl: place.thumbnail,
                                 placeholder: (_, __) {
                                   return const CircleAvatar(
                                     child: Icon(Icons.place),
@@ -129,16 +127,6 @@ class PlaceMasterPage extends StatelessWidget {
                               subtitle: Text(
                                 place.description,
                                 overflow: TextOverflow.ellipsis,
-                              ),
-                              trailing: Text(
-                                '${GeolocatorService.getDistance(
-                                  LatLng(
-                                    20.949981754118216,
-                                    105.84142119663115,
-                                  ),
-                                  place.position,
-                                )}\nkm',
-                                textAlign: TextAlign.center,
                               ),
                               onTap: () => AppPages.push(context, AppPages.place.path + AppPages.detail.path, place),
                             );
@@ -162,8 +150,6 @@ class PlaceDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var imageIndex = 0;
-    final imageController = PageController(initialPage: imageIndex);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -181,61 +167,12 @@ class PlaceDetailPage extends StatelessWidget {
         children: [
           SizedBox(
             height: MediaQuery.of(context).size.height / 3,
-            child: StatefulBuilder(
-              builder: (context, setState) {
-                final images = place.images.toList();
-                return Stack(
-                  children: [
-                    PageView.builder(
-                      controller: imageController,
-                      itemCount: images.length,
-                      itemBuilder: (context, index) {
-                        return CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: images.elementAt(index),
-                          placeholder: (_, __) => centeredLoadingIndicator,
-                          errorWidget: (_, __, ___) {
-                            return const Center(
-                              child: Icon(Icons.place),
-                            );
-                          },
-                        );
-                      },
-                      onPageChanged: (index) => setState(() => imageIndex = index),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: images.map((image) {
-                          final index = images.indexOf(image);
-                          return InkWell(
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 4,
-                              ),
-                              child: Icon(
-                                imageIndex == index ? Icons.circle : Icons.circle_outlined,
-                                size: 12,
-                                color: imageIndex == index ? Colors.blue : Colors.white,
-                              ),
-                            ),
-                            onTap: () {
-                              setState(() {
-                                imageIndex = index;
-                                imageController.animateToPage(
-                                  imageIndex,
-                                  curve: Curves.easeInOut,
-                                  duration: const Duration(milliseconds: 500),
-                                );
-                              });
-                            },
-                          );
-                        }).toList(),
-                      ),
-                    )
-                  ],
+            child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: place.thumbnail,
+              placeholder: (_, __) {
+                return const Center(
+                  child: Icon(Icons.place),
                 );
               },
             ),

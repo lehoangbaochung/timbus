@@ -1,6 +1,7 @@
 part of 'app_storage.dart';
 
 class _LocalStorage implements _LocalRepository {
+  late Map<int, Color> _colors;
   late Map<String, String> _localizations;
   late final SharedPreferences _preferences;
 
@@ -8,6 +9,9 @@ class _LocalStorage implements _LocalRepository {
   static const languageCode = 'language_code';
   static const favoriteStops = 'favorite_stops';
   static const favoriteRoutes = 'favorite_routes';
+
+  @override
+  Color paint(int id) => _colors[id] ?? Color(id);
 
   @override
   String localize(int id) => _localizations['$id'] ?? '$id';
@@ -46,8 +50,16 @@ class _LocalStorage implements _LocalRepository {
   }
 
   @override
-  bool getThemeMode() {
-    return _preferences.getBool(themeMode) ?? true;
+  ThemeMode getThemeMode() {
+    return ThemeMode.values.byName(
+      _preferences.getString(themeMode) ?? ThemeMode.system.name,
+    );
+  }
+
+  @override
+  Future<bool> setThemeMode(ThemeMode mode) {
+    _colors = mode.getPlatformBrightness().toSwatch();
+    return _preferences.setString(themeMode, mode.name);
   }
 
   @override
@@ -60,10 +72,5 @@ class _LocalStorage implements _LocalRepository {
       ),
     );
     return _preferences.setString(languageCode, code);
-  }
-
-  @override
-  Future<bool> setThemeMode(bool mode) {
-    return _preferences.setBool(themeMode, mode);
   }
 }

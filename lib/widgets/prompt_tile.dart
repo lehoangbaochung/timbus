@@ -22,8 +22,9 @@ class PromptTile extends StatelessWidget {
             ),
             title: Text(
               prompt,
-              style: const TextStyle(
+              style: TextStyle(
                 fontStyle: FontStyle.italic,
+                color: appStorage.paint(2),
               ),
             ),
             trailing: IconButton(

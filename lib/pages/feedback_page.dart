@@ -43,10 +43,11 @@ class FeedbackPage extends StatelessWidget {
                   subtitle: Text(
                     appStorage.localize(40),
                   ),
-                  leading: const SizedBox(
+                  leading: SizedBox(
                     height: double.infinity,
                     child: CircleAvatar(
-                      child: Icon(Icons.send_time_extension),
+                      foregroundColor: appStorage.paint(0),
+                      child: const Icon(Icons.send_time_extension),
                     ),
                   ),
                   trailing: const SizedBox(
@@ -69,10 +70,11 @@ class FeedbackPage extends StatelessWidget {
                   subtitle: Text(
                     appStorage.localize(42),
                   ),
-                  leading: const SizedBox(
+                  leading: SizedBox(
                     height: double.infinity,
                     child: CircleAvatar(
-                      child: Icon(Icons.content_paste_go),
+                      foregroundColor: appStorage.paint(0),
+                      child: const Icon(Icons.content_paste_go),
                     ),
                   ),
                   trailing: const SizedBox(
@@ -95,10 +97,11 @@ class FeedbackPage extends StatelessWidget {
                   subtitle: Text(
                     appStorage.localize(44),
                   ),
-                  leading: const SizedBox(
+                  leading: SizedBox(
                     height: double.infinity,
                     child: CircleAvatar(
-                      child: Icon(Icons.send_to_mobile),
+                      foregroundColor: appStorage.paint(0),
+                      child: const Icon(Icons.send_to_mobile),
                     ),
                   ),
                   trailing: const SizedBox(

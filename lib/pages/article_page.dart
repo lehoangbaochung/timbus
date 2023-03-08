@@ -62,7 +62,7 @@ class ArticleMasterPage extends StatelessWidget {
                                 article.content,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              leading:  CachedNetworkImage(
+                              leading: CachedNetworkImage(
                                 imageUrl: article.thumbnail,
                                 placeholder: (_, __) {
                                   return const CircleAvatar(

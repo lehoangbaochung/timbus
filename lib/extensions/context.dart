@@ -38,7 +38,4 @@ extension BuildContextX on BuildContext {
     );
     showSnackBar(message);
   }
-
-  Color get primaryColor => Theme.of(this).colorScheme.primary;
-  Color get secondaryColor => Theme.of(this).colorScheme.onPrimary;
 }

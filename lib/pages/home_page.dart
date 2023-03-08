@@ -1,8 +1,13 @@
+import 'package:bus/extensions/appearance.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '/app/app_pages.dart';
+import '/exports/entities.dart';
+import '/exports/widgets.dart';
+import '/extensions/context.dart';
 import '/extensions/geolocator.dart';
 import '/repositories/app_storage.dart';
 
@@ -12,10 +17,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mapController = MapController();
-    final timeController = Stream.periodic(
-      const Duration(minutes: 1),
-      (_) => DateTime.now(),
-    ).asBroadcastStream();
     return Scaffold(
       appBar: AppBar(
         titleSpacing: 0,
@@ -34,55 +35,54 @@ class HomePage extends StatelessWidget {
       drawer: Drawer(
         child: ListView(
           children: [
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  // FutureBuilder(
-                  //   future: appStorage.getAllPlaces(),
-                  //   builder: (context, snapshot) {
-                  //     if (snapshot.hasData) {
-                  //       final places = snapshot.requireData.toList()..shuffle();
-                  //       return FittedBox(
-                  //         fit: BoxFit.fill,
-                  //         child: Image.network(
-                  //           places.first.images.first,
-                  //           fit: BoxFit.fill,
-                  //         ),
-                  //       );
-                  //     }
-                  //     return const SizedBox.shrink();
-                  //   },
-                  // ),
-                  // Positioned(
-                  //   right: 8,
-                  //   bottom: 8,
-                  //   child: StreamBuilder(
-                  //     initialData: DateTime.now(),
-                  //     stream: timeController,
-                  //     builder: (context, snapshot) {
-                  //       final dateTime = snapshot.requireData;
-                  //       return Column(
-                  //         mainAxisSize: MainAxisSize.min,
-                  //         crossAxisAlignment: CrossAxisAlignment.end,
-                  //         children: [
-                  //           Text(
-                  //             '${dateTime.hour}:${dateTime.hour}',
-                  //             style: Theme.of(context).textTheme.titleLarge,
-                  //           ),
-                  //           Text(
-                  //             '${dateTime.day}/${dateTime.month}/${dateTime.year}',
-                  //           ),
-                  //         ],
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
-                ],
-              ),
+            FutureBuilder(
+              future: appStorage.getAllPlaces(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final place = snapshot.requireData.random;
+                  return DrawerHeader(
+                    padding: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: CachedNetworkImageProvider(
+                          place.thumbnail,
+                        ),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        ColoredBox(
+                          color: const Color(0x44000000),
+                          child: ListTile(
+                            dense: true,
+                            selected: true,
+                            selectedColor: Colors.white,
+                            title: Text(
+                              place.name,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            subtitle: Text(
+                              place.description,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            trailing: const Icon(Icons.arrow_right),
+                            onTap: () {
+                              AppPages.pop(context);
+                              AppPages.push(context, AppPages.place.path + AppPages.detail.path, place);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return const DrawerHeader(
+                  child: centeredLoadingIndicator,
+                );
+              },
             ),
             ListTile(
               selected: true,
@@ -213,8 +213,8 @@ class HomePage extends StatelessWidget {
                       radius: 40,
                       borderStrokeWidth: 40,
                       useRadiusInMeter: true,
-                      color: Colors.blue,
-                      borderColor: Colors.blue.withOpacity(0.4),
+                      color: appStorage.paint(0),
+                      borderColor: appStorage.paint(0).withOpacity(0.4),
                     ),
                   ],
                 );
@@ -236,11 +236,11 @@ class HomePage extends StatelessWidget {
                       point: stop.position,
                       builder: (context) {
                         return IconButton(
-                          icon: const CircleAvatar(
-                            foregroundColor: Colors.blue,
+                          icon: CircleAvatar(
+                            foregroundColor: appStorage.paint(0),
                             child: Icon(
                               Icons.bus_alert,
-                              color: Colors.black,
+                              color: appStorage.paint(0),
                             ),
                           ),
                           onPressed: () => AppPages.push(context, AppPages.stop.path, stop),

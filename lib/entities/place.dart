@@ -1,40 +1,30 @@
-import 'package:bus/repositories/app_storage.dart';
-import 'package:latlong2/latlong.dart';
-
 import '/exports/entities.dart';
+import '/repositories/app_storage.dart';
 
 class Place extends Comparable {
   static final Map<String, Place> _shelf = {};
 
   final String name;
-  final String website;
-  final LatLng position;
   final String description;
-  final Iterable<String> images;
+  final String thumbnail;
 
   dynamic _stops;
 
   Place._(
     super.id, {
     required this.name,
-    required this.website,
-    required this.position,
     required this.description,
-    required this.images,
+    required this.thumbnail,
   });
 
   factory Place.fromJson(String id, Map<String, dynamic> fields) {
     return _shelf.putIfAbsent(id, () {
       final stopsString = fields['stops'] as String;
-      final positionString = fields['position'] as String;
-      final positionNumbers = positionString.split(separator).map((e) => double.tryParse(e) ?? 0);
       return Place._(
         id,
         name: fields['name'],
-        website: fields['website'],
         description: fields['description'],
-        images: Iterable.castFrom(fields['images']),
-        position: LatLng(positionNumbers.first, positionNumbers.last),
+        thumbnail: fields['thumbnail'],
       ).._stops = stopsString.split(separator);
     });
   }
@@ -44,11 +34,9 @@ class Place extends Comparable {
     return {
       id: {
         'name': name,
-        'website': website,
         'description': description,
-        'images': images,
+        'thumbnail': thumbnail,
         'stops': stops.map((stop) => stop.id).join(separator),
-        'position': '${position.latitude}$separator${position.longitude}',
       },
     };
   }
@@ -59,11 +47,12 @@ class Place extends Comparable {
     final stopsId = _stops as Iterable<String>;
     final stopsCollection = await appStorage.getAllStops();
     for (final stopId in stopsId) {
-      stops.addAll(
-        stopsCollection.where(
-          (stop) => stop.id == stopId,
-        ),
-      );
+      for (final stop in stopsCollection) {
+        if (stop.id == stopId) {
+          stops.add(stop);
+          break;
+        }
+      }
     }
     return _stops = stops;
   }
